@@ -429,6 +429,8 @@ class HuobiLtcSell(BaseWebSocketHandler):
             else:
                 respon_json = tornado.escape.json_encode({'msg':'fail'})
                 self.write_message(respon_json)
+
+    #只是测试
  
 
 
