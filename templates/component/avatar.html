@@ -1,0 +1,94 @@
+<style>.modal-font{
+    font-weight:800;
+    }
+    .modal-text{
+        font:bold;
+        font-size: 20px;
+        }
+    .modal-InputForm{
+        border: solid 1px;
+        border-style: #05e4a1;
+        }</style>
+<ul class="nav navbar-nav navbar-right">
+<li class="dropdown">
+                    <a href="javascript:void(0);" class="dropdown-toggle avatar" data-toggle="dropdown"><img src={{ static_url("images/qiutuanbao.png")}}><span class="badge"></span></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-menu-header text-center">
+                            <strong>Account</strong>
+                        </li>
+                        <li class="m_2" id = "callModal"><a href="javascript:void(0);"><i class="fa fa-wrench"></i> Settings</a></li>  
+                        <li class="m_2"><a href="/logout"><i class="fa fa-lock"></i>Logout</a></li>  
+                    </ul>
+                </li>
+</ul>
+<div id="modall" class="modal-demo" style="display: none;backgroud-color:white">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" onclick="Custombox.close();">
+        <span>&times;</span><span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title modal-font" id="myModalLabel">个人设置</h4>
+            </div>
+            <div class="form-horizontal">
+                <input type="hidden" id="_id" name="_id" class="reset-able">
+                <div class="modal-body">
+                <div class="form-group">
+                        <label class="control-label col-lg-2 modal-font">名称</label>
+                        <div class="col-lg-6">
+                            <input type="text" id="name" name="name" placeholder="名称" class="form-control " value="{{ user[0][2] }}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-lg-2 modal-font" >密码</label>
+                        <div class="col-lg-6">
+                            <input type="password" id="alias" name="password" placeholder="******" class="form-control " value="{{ user[0][3] }}">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                    <button class="btn btn-default" class="close" onclick="Custombox.close();">关闭</button>
+                    <button class="btn btn-primary" id="avatarSava">保存修改</button>
+                    </div>
+                    </div>
+                </div>
+</div>
+</div>
+</div>
+<script>
+$('#callModal').on('click', function( e ) {
+    Custombox.open({
+        target: '#modall',
+        effect: 'newspaper',
+        escKey:true,
+        overlay:true,
+    });
+    e.preventDefault();
+});
+$("#avatarSava").click(avatarSava);
+function avatarSava(){
+    var url = 'ws://'+window.location.host+'/api/avatarInfo'
+    var ws = new WebSocket(url);
+    ws.onopen = function(){
+        var name = $("input[name='name']").val()
+        var password = $("input[name='password']").val()
+        if ((name !== null || name !== '') && (password !== null || password !== '' )){
+            var data = {"name":name,"password":password}
+            ws.send(JSON.stringify(data));
+        }
+    }
+    ws.onmessage = function(event){
+        var data = JSON.parse(event.data);
+        if(data.name !== null || data.name !== undefined || name !== ''){
+        swal("修改成功", "", "success")
+        $("input[name='name']").val(data.name)
+        $("input[name='password']").val(data.password)
+        ws.close();
+        }else{
+            swal("修改失败","","error")
+            $("input[name='name']").val(data.name)
+            $("input[name='password']").val(data.password)
+            ws.close();
+        }
+    }
+}
+</script>
