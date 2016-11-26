@@ -386,6 +386,9 @@ class DrawProfit(BaseWebSocketHandler):
             result = result[-3000:]
             xAxisData = [item[1][4:8]+'/'+item[1][8:10]+':'+item[1][10:12] for item in result]
             showdata = [item[4] for item in result]
+        else:
+            xAxisData = [item[1][4:8]+'/'+item[1][8:10]+':'+item[1][10:12] for item in result]
+            showdata = [item[4] for item in result]
         respon_json = tornado.escape.json_encode({"xAxisData":xAxisData,"showdata":showdata}) 
         self.write_message(respon_json)
 
