@@ -1,0 +1,174 @@
+<style>
+  .fa-up{
+    width: 10px !important;
+    height: 10px !important;
+    text-align: center !important;
+    line-height: 0px !important;
+    color:green !important;
+  }
+  .fa-down{
+    width: 10px !important;
+    height: 10px !important;
+    text-align: center !important;
+    line-height: 0px !important;
+    color:red !important;
+  }
+</style>
+<script src="{{ static_url("js/mainIndex.js") }}"></script>
+<div class="col_3">
+            <div class="col-md-3 widget widget1">
+                <div class="r3_counter_box">
+                    <i class="pull-left fa fa-bar-chart fa-2x dollar1 icon-rounded"></i>
+                    <div class="stats">
+                      <h5><strong>loading....</strong></h5>
+                      <span>收益率</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 widget widget1">
+                <div class="r3_counter_box">
+                    <i class="pull-left fa  fa-bomb fa-2x  dollar1 icon-rounded "></i>
+                    <div class="stats">
+                      <h5><strong>loading....</strong></h5>
+                      <span>总额止损价</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 widget widget1">
+                <div class="r3_counter_box">
+                    <i class="pull-left fa fa-database   fa-2x dollar1 icon-rounded"></i>
+                    <div class="stats">
+                      <h5><strong class="tradeVol">loading....</strong></h5>
+                      <span>交易量</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 widget">
+                <div class="r3_counter_box">
+                    <i class="pull-left fa fa-jpy fa-2x dollar1 icon-rounded"></i>
+                    <div class="stats">
+                      <h5 name="net_asset"><strong>loading....</strong></h5>
+                      <span>净值</span>
+                    </div>
+                </div>
+             </div>
+            <div class="clearfix"> </div>
+      </div>
+<div class="col_3">
+            <div class="col-md-3 widget widget1">
+                <div class="r3_counter_box">
+                    <i class="pull-left fa  fa-gbp fa-2x dollar1 icon-rounded"></i>
+                    <div class="stats">
+                      <h5 name="ltcprice"><strong class="ltcprice">loading....</strong></h5>
+                      <span>莱特币价格</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 widget widget1">
+                <div class="r3_counter_box">
+                    <i class="pull-left fa  fa-bitcoin fa-2x  dollar1 icon-rounded "></i>
+                    <div class="stats">
+                      <h5 name="btcprice"><strong class="btcprice">loading....</strong></h5>
+                      <span>比特币价格</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 widget widget1">
+                <div class="r3_counter_box">
+                    <i class="pull-left fa fa-bomb  fa-2x dollar1 icon-rounded"></i>
+                    <div class="stats">
+                      <h5 name="bombprice"><strong>loading....</strong></h5>
+                      <span>爆仓价格</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 widget">
+                <div class="r3_counter_box">
+                    <i class="pull-left fa fa-database  fa-2x dollar1 icon-rounded"></i>
+                    <div class="stats">
+                      <h5 name="moneyTotal"><strong>loading....</strong></h5>
+                      <span>资金总量</span>
+                    </div>
+                </div>
+             </div>
+            <div class="clearfix"> </div>
+      </div>
+<script>
+var ltcprice = $("h5[name='ltcprice']>strong")
+var number = $("div.stats>h5>strong");
+var btcprice = $("h5[name='btcprice']>strong")
+var net_asset,ltc;
+var coinDataUrl = 'ws://'+window.location.host+'/api/coinData';
+var accountUrl = 'ws://'+window.location.host+'/api/accountInfo';
+function numberStep(now, tween) {
+            var floored_number = Math.floor(now) / decimal_factor,
+            target = $(tween.elem);
+            if (decimal_places > 0) {
+            floored_number = floored_number.toFixed(decimal_places);
+            floored_number = floored_number.toString().replace('.', ',');
+            }
+            target.text("￥" + floored_number);
+            }
+function account_data(){
+    var accountWs = new WebSocket(accountUrl);
+  accountWs.onmessage = function(event) {
+    var data = JSON.parse(event.data);
+    number.eq(0).html(data["ProfitRate"]+"%");
+    number.eq(1).html("￥"+data["testMoney"]);
+    //number.eq(2).html(data["tradeTotal"]);
+    number.eq(3).html("￥"+data["net_asset"]);
+    $("h5[name='moneyTotal']>strong").html("￥"+data["moneyTotal"])
+    var bombprice = data["bombprice"]?data["bombprice"]:"None"
+    $("h5[name='bombprice']>strong").html("￥"+bombprice)
+    net_asset = data["net_asset"]
+}
+}
+function coinData(){
+    var coinDataWs = new WebSocket(coinDataUrl);
+  coinDataWs.onmessage = function(event){
+    var data_ltc = JSON.parse(event.data);
+    ltcdata = data_ltc.ltc.ticker.last;
+    newLtcprice = $(".ltcprice").text()
+    newLtcprice = newLtcprice.substring(1)
+    if(newLtcprice < ltcdata){
+              ltcprice.html("￥"+ltcdata+"  <span class='fa fa-up  fa-4x fa-arrow-up'></span>").fadeOut('slow');
+              ltcprice.css("color","#05e4a1")
+              ltcprice.html("￥"+ltcdata+"  <span class='fa fa-up  fa-4x fa-arrow-up'></span>").fadeIn('slow');
+            }else if(newLtcprice > ltcdata){
+              ltcprice.html("￥"+ltcdata+"  <span class='fa fa-down  fa-4x fa-arrow-down'></span>").fadeOut('slow');
+              ltcprice.css("color","#f64a83")
+              ltcprice.html("￥"+ltcdata+"  <span class='fa fa-down  fa-4x fa-arrow-down'></span>").fadeIn('slow');
+            }else{
+              ltcprice.html("￥"+ltcdata).fadeOut('slow');
+              ltcprice.css("color","#00aced")
+              ltcprice.html("￥"+ltcdata).fadeIn('slow');
+            }
+            ltc = ltcdata
+    var data_btc = JSON.parse(event.data);
+    btcdata = data_btc.btc.ticker.last;
+    newBtcprice = $(".btcprice").text()
+    newBtcprice = newBtcprice.substring(1)
+    if(newBtcprice < btcdata){
+      btcprice.html("￥"+btcdata+"  <span class='fa fa-up  fa-4x fa-arrow-up'></span>").fadeOut('slow');
+      btcprice.css("color","#05e4a1")
+      btcprice.html("￥"+btcdata+"  <span class='fa fa-up  fa-4x fa-arrow-up'></span>").fadeIn('slow');
+    }else if(newBtcprice > btcdata){
+      btcprice.html("￥"+btcdata+"  <span class='fa fa-down  fa-4x fa-arrow-down'></span>").fadeOut('slow');
+      btcprice.css("color","#f64a83")
+      btcprice.html("￥"+btcdata+"  <span class='fa fa-down  fa-4x fa-arrow-down'></span>").fadeIn('slow');
+    }else{
+      btcprice.html("￥"+btcdata).fadeOut('slow');
+      btcprice.css("color","#00aced")
+      btcprice.html("￥"+btcdata).fadeIn('slow');
+    }
+  }
+}
+function titleSet(){
+   $(document).attr("title","LTC: "+ltcprice.text()+' BTC: '+btcprice.text());//修改title值
+}
+$(function(){
+account_data()
+titleSet()
+setInterval("titleSet()",1000);
+});
+</script>

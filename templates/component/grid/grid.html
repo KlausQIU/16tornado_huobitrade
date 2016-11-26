@@ -1,0 +1,166 @@
+<style type="text/css">
+    .grid-padding{
+        padding-top:20px !important;
+        padding-bottom: 20px !important;
+    }
+    .align_center{
+        text-align: center;
+    }
+    .chooseTd{
+       background-color: #fbf8e9;
+    }
+    .grid-modal-title{
+        text-align: center;
+        padding-top:10px;
+        padding-bottom: 20px;
+    }
+    .grid-modal{
+    width:650px;
+    height:400px;
+    display: none;
+    backgroud-color:white
+    }
+    .grid-column{
+
+    }
+    .gridTable{
+        border:1px solid #ddd;
+    }
+</style>
+<div class="col-md-8 stats-info stats-info1 col-sm-8" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width: 746px;height:500px;margin-left: 10px;float:left;">
+                <div class="panel-heading  grid-padding">
+                    <h4 class="panel-title" style="color:#05e4a1;font-size:20px;font-weight: bold;">斐波那契网格</h4>
+                </div>
+                <table class="table K-table-border">
+                <thead>
+                    <tr>
+                        <th class="align_center">区间</th>
+                        <th class="align_center">仓位</th>
+                        <th class="align_center">今日</th>
+                        <th class="align_center">当前仓位</th>
+                        <th class="align_center">一键操作</th>
+                    </tr>
+                </thead>
+                {% for n in range(0,6) %}
+                <tbody class="fibonacciShow">
+                 <td class="gridZoneName align_center" name = "{{ fibonacci[n]['name'] }}">{{ fibonacci[n]['name'] }}</td>
+                 <td class="gridZonePosition align_center">{{ float(fibonacci[n]['position']) }}%</td>
+                 <td class="gridZoneToday align_center ">{{ fibonacci[n]['yesterday'] }}--{{ fibonacci[n]['today'] }}</td>
+                 {% try %}{% if fibonacci[n].has_key('freightSpace') %}<td class="gridZoneFreightSpace align_center" style="color: #000000;font-size: 18px;">{{ float(fibonacci[n]['freightSpace'])*100 }}%</td>{% else %}<td class="align_center">无</td>{% end %}
+                 {% except %}{% end  %}
+                 <td style="display: block;text-align: center;"><a class="btn btn-secondary align_center gridOrder" >一键下单</a></td>
+                 </tbody>
+                 {% end %}
+                </table> 
+</div>
+<div id="GridOrderModal" class="modal-demo grid-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" onclick="Custombox.close();">
+                <span>&times;</span><span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title modal-font" id="myModalLabel">买入卖出确认</h4>
+            </div>
+            <div class="col-md-12" style="margin-top: 20px;">
+                <div class="col-md-6 grid-column">
+                <table class="table K-table-border gridTable">
+                <thead>
+                    <tr>
+                        <th class="align_center" colspan="2">自定义下单</th>
+                    </tr>
+                </thead>
+                <tbody class="gridShow">
+                <tr class="gridTable">
+                <!-- oninput="OnInput (event)" onpropertychange="OnPropChanged (event)" -->
+                <td><label class="modal-font" style="width: 80px;font-size: 1.4em;">下单价格</label></td>
+                 <td class="gridZoneName align_center"><input type="text" oninput="OnInput(event)" onpropertychange="OnPropChanged(event)" id="orderPrice" name="orderPrice" placeholder="orderPrice" class="form-control " value="" ></td>
+                 <tr class="gridTable">
+                 <td><label class="modal-font" style="width: 80px;font-size: 1.4em;">下单数量</label></td>
+                 <td class="gridZoneName align_center">
+                 <input type="text" id="orderMount" name="quickMount" placeholder="orderMount" class="form-control orderMount" value="" ></td></tr>
+                 <tr style="text-align: center;">
+                 <td colspan="2"><a class="btn btn-secondary" id="quickOrder">
+                 立即下单
+                 </a>
+                 </td>
+                 </tr>
+                </tbody>
+                </table>
+                </div> 
+                <div class="col-md-6 grid-column">
+                 <table class="table K-table-border gridTable">
+                <thead>
+                    <tr>
+                        <th class="align_center" colspan="2">分散下单</th>
+                    </tr>
+                </thead>
+                <tbody class="gridShow">
+                <tr class="gridTable">
+                <td><label class="modal-font" style="width: 80px;font-size: 1.4em;">下单区间</label></td>
+                 <td class="gridZonePrice align_center"><input type="text" id="gridZonePrice" name="gridZonePrice" placeholder="orderPrice" class="form-control " value=""></td></tr>
+                 <tr class="gridTable">
+                 <td><label class="modal-font" style="width: 80px;font-size: 1.4em;">下单数量</label></td>
+                 <td class="gridZoneName align_center"><input type="text" id="partialMount" name="partialMount" placeholder="orderPrice" class="form-control orderMount" value=""></td></tr>
+                 <tr style="text-align: center;"><td colspan="2"><a class="btn btn-secondary" id="partialOrder">分散下单</a></td></tr>
+                  </tbody>
+                </table> 
+                </div>
+            </div>
+</div>
+</div>
+</div>
+
+<script>
+var position;
+$('.gridOrder').on('click', function( e ) {
+    Custombox.open({
+        target: '#GridOrderModal',
+        effect: 'swell',
+        escKey:true,
+        overlay:true,
+    });
+    var middlerPrice = $(this).parents("td").prevAll(".gridZoneToday").text();
+    var intervalPrice = ((parseFloat(middlerPrice)+parseFloat(middlerPrice.substring(7,11)))/2).toFixed(2);
+    $("#gridZonePrice").val(middlerPrice);
+    $("#orderPrice").val(intervalPrice);
+
+    position = $(this).parents('td').prevAll(".gridZonePosition").text().substring(0,4)
+    var net_asset = $("h5[name='net_asset']>strong").text().substring(1,8)
+    console.log(net_asset)
+    console.log((net_asset*parseFloat(position)/(ltc*100)))
+    
+    $('.orderMount').val((net_asset*position/(ltc*100)).toFixed(2));
+   /***  if(parseFloat(ltcprice.text().substring(1,6)) >= intervalPrice){
+    $("#orderPrice").val(intervalPrice);
+    }else{
+        $("#orderPrice").val(parseFloat(ltcprice.text().substring(1,6)));
+    } ***/
+
+    e.preventDefault();
+});
+// Firefox, Google Chrome, Opera, Safari, Internet Explorer from version 9
+    function OnInput (event) {
+       $('.orderMount').val((net_asset*position/(event.target.value*100)).toFixed(2));
+    }
+// Internet Explorer
+    function OnPropChanged (event) {
+        if (event.propertyName.toLowerCase () == "value") {
+            $('.orderMount').val((net_asset*position/(event.srcElement.value*100)).toFixed(2));
+        }
+    }
+
+$('#quickOrder').on('click', function( e ) {
+    Custombox.open({
+        target: '#confirmOrderModal',
+        effect: 'swell',
+        escKey:true,
+        overlay:true,
+    });
+    })
+$(function(){
+    var chooseTd = $(".gridZoneFreightSpace").parents("tbody");
+    chooseTd.addClass('chooseTd')
+    })
+
+</script>

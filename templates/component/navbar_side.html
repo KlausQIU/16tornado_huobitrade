@@ -1,0 +1,109 @@
+<style>
+    /*a:hover{
+        border: 2px solid #05e4a1;
+    }*/
+    a.active{
+    border: 2px solid #05e4a1;
+  }
+</style>
+<div class="navbar-default sidebar" role="navigation">
+    <div class="sidebar-nav navbar-collapse">
+        <ul class="nav" id="side-menu">
+            <li>
+                <a href="main"><i class="fa fa-dashboard fa-fw nav_icon"></i>账户详情</a>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-laptop nav_icon"></i>Huobi<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="javascript:void(0);" name="HuobiBTC">BTC</a>
+                    </li>
+                    <li>
+                        <a href="HuobiLtc"  name="HuobiLTC">LTC</a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-indent nav_icon"></i>OKcoin<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="javascript:void(0);" name="OKBTC">BTC</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" name="OKLTC">LTC</a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-envelope nav_icon"></i>策略配置<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="javascript:void(0);" class="DTStrategy" name="DTStrategy">DT策略</a>
+                    </li>
+                    <li>
+                        <a href="tradeStrategy" name="tradeStrategy">市交策略</a>
+                    </li>
+                    <li>
+                        <a href="grid" class = "netStrategy" name="netStrategy">网格策略</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" name="pyramidStrategy">金字塔策略</a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+            <li>
+                <a href="javascript:void(0);"><i class="fa fa-flask nav_icon"></i>待开发</a>
+            </li>
+             <li>
+                <a href="javascript:void(0);"><i class="fa fa-check-square-o nav_icon"></i>待开发<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="javascript:void(0);">待开发</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);">待开发</a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-table nav_icon"></i>待开发<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="javascript:void(0);">待开发</a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-sitemap fa-fw nav_icon"></i>待开发<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="javascript:void(0);">待开发</a>
+                    </li>
+                    <li>
+                        <a href="./login">Login</a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+        </ul>
+    </div>
+    <!-- /.sidebar-collapse -->
+</div>
+<script type="text/javascript">
+    $("a[name='HuobiBTC']").click(waitDev);
+    //$("a[name='HuobiLTC']").click(waitDev);
+    $("a[name='OKBTC']").click(waitDev);
+    $("a[name='OKLTC']").click(waitDev);
+    $("a[name='DTStrategy']").click(waitDev);
+    //$("a[name='tradeStrategy']").click(waitDev);
+    //$("a[name='netStrategy']").click(waitDev);
+    $("a[name='pyramidStrategy']").click(waitDev);
+    function waitDev(){
+        swal("还没开发好呢","其实是还没想好要做什么页面。。","error")
+    }
+</script>

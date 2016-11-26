@@ -1,0 +1,239 @@
+<div class="col-md-8 span-8 col-xs-12 col-sm-12" style="height:434px;background-color: none;" >
+<div id="LitecoinGraph" style="padding-left: 15px;background: #ffffff;height:434px;">
+</div>
+</div>
+<script>
+var xAxisData,showdata,xBxisData,ltcData;
+var myProfit = echarts.init(document.getElementById("LitecoinGraph"),'walden');
+var app = {};
+var handlerltcUrl = 'ws://'+window.location.host+'/api/handlerltc';
+var profitUrl = 'ws://'+window.location.host+'/api/Profit';
+function insert_flg(str,flg,sn){
+    var newstr="";
+    var tmp=str.substring(0,sn);
+    newstr =tmp+flg;
+    tmp = str.substring(sn);
+    newstr = newstr + tmp
+    return newstr;
+}
+function handlerltc(){
+    var handlerltcws = new WebSocket(handlerltcUrl);
+    handlerltcws.onmessage = function(event){
+    var data = JSON.parse(event.data);
+    data0 = data;
+    handlerltcws.close();
+    }
+}
+
+function splitData(rawData) {
+    var xBxisData = [];
+    var ltcData = []
+    for (var i = 0; i < rawData.length; i++) {
+        var xdata = (rawData[i].splice(0, 1)[0]).substring(8,12);
+        xBxisData.push(insert_flg(xdata,':',2));
+        var h = rawData[i][1];
+        var l = rawData[i][2];
+        var c = rawData[i][3];
+        rawData[i][1] = c;
+        rawData[i][2] = l;
+        rawData[i][3] = h;
+        rawData[i].pop()
+        ltcData.push(rawData[i]);
+    }
+    return {
+        xBxisData: xBxisData,
+        ltcData: ltcData
+    };
+}
+
+var dealUrl = 'ws://'+window.location.host+'/api/dealMessage'
+var dealws = new WebSocket(dealUrl);
+dealdata = [];
+xCxisData = [];
+dealws.onmessage = function(event){
+        var data = JSON.parse(event.data);
+        $.each(data,function(index,item){
+            dealdata.push(item['order_price'])
+            var d = new Date(item['last_processed_time'] * 1000);
+            var date = (d.getHours()) + ":" + (d.getMinutes())
+            xCxisData.push(date)
+            })
+    } 
+function DrawLTCProfit(){
+    var handlerltcws = new WebSocket(handlerltcUrl);
+    handlerltcws.onmessage = function(event){
+    xAxisData = [];
+    showdata = [];
+    ltcData = [];
+    xBxisData = [];
+    var data = JSON.parse(event.data);
+    ltcData = data.ltcData;
+    xAxisData = data.xAxisData
+    xBxisData = data.xBxisData
+    showdata = data.showdata
+    option = {
+    title: {
+        text: '收益率/LTC',
+        left: 0
+    },
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'line'
+        }
+    },
+    legend: {
+        data: ['LTC','Profit']
+    },
+    grid: {
+        left: '10%',
+        right: '10%',
+        bottom: '15%'
+    },
+    xAxis: {
+        type: 'category',
+        data: xBxisData,
+        scale: true,
+        boundaryGap : false,
+        axisLine: {onZero: false},
+        splitLine: {show: false},
+        splitNumber: 20,
+        min: 'dataMin',
+        max: 'dataMax'
+    },
+    yAxis: [
+        {
+            type: 'value',
+            scale: true,
+            name: 'LTC',
+            axisLabel: {
+                formatter: '{value}'
+            },
+            //max:27
+            //min:25.5
+        },
+        {
+            type: 'value',
+            scale: true,
+            name: 'Profit',
+            axisLabel: {
+                formatter: '{value}'
+            },
+            max:120,
+            //min:0,
+        }
+    ],
+
+    dataZoom: [
+        {
+            type: 'inside',
+            start: 70,
+            end: 100
+        },
+        {
+            show: true,
+            type: 'slider',
+            y: '90%',
+            start: 80,
+            end: 100
+        }
+    ],
+    series: [
+        {
+            name: 'LTC',
+            type: 'candlestick',
+            data: ltcData,
+            markPoint: {
+                
+                data: [
+                    {
+                        name: '最高价',
+                        type: 'max',
+                        valueDim: 'highest'
+                    },
+                    {
+                        name: '最低价',
+                        type: 'min',
+                        valueDim: 'lowest'
+                    },
+                    {
+                        name: '收盘平均价',
+                        type: 'average',
+                        valueDim: 'close'
+                    }
+                ],
+                tooltip: {
+                    
+                }
+            },
+            markLine: {
+                symbol: ['none', 'none'],
+                data: [
+                    [
+                        {
+                            name: 'from lowest to highest',
+                            type: 'min',
+                            valueDim: 'lowest',
+                            symbol: 'circle',
+                            symbolSize: 10,
+                            label: {
+                                normal: {show: false},
+                                emphasis: {show: false}
+                            }
+                        },
+                        {
+                            type: 'max',
+                            valueDim: 'highest',
+                            symbol: 'circle',
+                            symbolSize: 10,
+                            label: {
+                                normal: {show: false},
+                                emphasis: {show: false}
+                            }
+                        }
+
+
+                    ],
+                    {
+                        name: 'min line on close',
+                        type: 'min',
+                        valueDim: 'close'
+                    },
+                    {
+                        name: 'max line on close',
+                        type: 'max',
+                        valueDim: 'close'
+                    }
+                ]
+            }
+        },
+        {
+            name:'Profit',
+            type:'bar',
+            data:showdata,
+            yAxisIndex: 1,
+            animationDelay: function (idx) {
+            return idx * 10;
+            },
+        },
+        
+
+    ]
+};
+
+if (option && typeof option === "object") {
+            myProfit.setOption(option, true);
+            window.onresize = myProfit.resize;
+        }
+}
+}
+$(function(){
+  DrawLTCProfit();
+})
+</script>
+
+
+
+
+
+

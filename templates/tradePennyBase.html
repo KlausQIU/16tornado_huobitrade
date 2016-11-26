@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}主页{% end %}
+{% block content %}
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<div id="wrapper">
+     <!-- Navigation -->
+        <nav class="top1 navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="grid">市交策略</a>
+            </div>
+            <!-- /.navbar-header -->
+                {% include component/avatar.html %}
+            {% include component/navbar_side.html %}
+            <!-- /.navbar-static-side -->
+        </nav>
+        <div id="page-wrapper">
+    <div class="graphs">
+        {% include component/accountInfo.html %}
+  <div>
+     {% include component/tradePenny/tradePennySetting.html %}
+     {% include component/tradePenny/tradeOrderInterval.html %}
+      {% include component/tradePenny/tradePenny.html %}
+  </div>
+  <div class="clearfix"> </div>
+  </div>
+
+    <div class="content_bottom">
+     <div class="col-md-8 span_3">
+        {% include component/footer.html %}
+    </div>
+   </div>
+
+    <!-- /#wrapper -->
+    <!-- Bootstrap Core JavaScript -->
+{% end %}
+
