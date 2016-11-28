@@ -201,8 +201,8 @@ if __name__ == '__main__':
     # #sqlRun = 'PRAGMA table_info([SETTING])'
     # d = db.pragma('tradePenny')
     # print d
-    updateRow = {'order_id':'BLOB'}
-    db.alert('tradePenny',updateRow)
+    # updateRow = {'order_id':'BLOB'}
+    # db.alert('tradePenny',updateRow)
     # print db.select('SETTING',uid=1)
     #db.insert('user',0,0,'Moon','qiu','7ffd4f94-63d605e6-d5f400fb-a6ba0','d5d52f33-dcbd2167-5c6b7b0f-f5676')
     # db.insert('tradePenny',0,'Sell','LTC',1,27.61,0,u'测试一个')
