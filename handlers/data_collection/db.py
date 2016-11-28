@@ -8,7 +8,7 @@ import time
 
 def intailze(func):
     def init(self,*args,**kw):
-        self.cx = sqlite3.connect(r'C:\Klaus\System\16tornado_huobitrade\huobi.db')
+        self.cx = sqlite3.connect(r'C:\Klaus\System\17DB\16tornado_huobitrade\huobi.db')
         self.cursor = self.cx.cursor()
         return func(self,*args,**kw)
         self.close()
@@ -186,11 +186,11 @@ if __name__ == '__main__':
     # updateRow = {'access_key':'','secret_key':''}
     # selectRow = {'id':1}
     # db.update('user',updateRow,selectRow)
-    # c = db.select('profitData',id=0)
-    # for d in c:
-    #     if float(d[4]) >= 700:
-    #         print d
-    # db.delete('profitData',Profit='0')
+    c = db.select('profitData',id=0)
+    for d in c:
+        if float(d[4]) == 0:
+            print d
+    db.delete('profitData',Profit='0')
     # print c
     #db.insert('AllStrategy',0,'false','false')
     #db.delete('profitData',Profit=u'1150.87')

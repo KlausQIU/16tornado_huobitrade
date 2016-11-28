@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+7#!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
 import tornado.web
@@ -384,6 +384,9 @@ class DrawProfit(BaseWebSocketHandler):
         result = db.select('profitData',uid=result[0][1])
         if len(result) > 3000:
             result = result[-3000:]
+            xAxisData = [item[1][4:8]+'/'+item[1][8:10]+':'+item[1][10:12] for item in result]
+            showdata = [item[4] for item in result]
+        else:
             xAxisData = [item[1][4:8]+'/'+item[1][8:10]+':'+item[1][10:12] for item in result]
             showdata = [item[4] for item in result]
         respon_json = tornado.escape.json_encode({"xAxisData":xAxisData,"showdata":showdata}) 
