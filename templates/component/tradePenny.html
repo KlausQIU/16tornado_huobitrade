@@ -1,0 +1,14 @@
+<div class="col-md-4 stats-info stats-info1 col-sm-4" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:395px;height:500px;margin-bottom: 10px;float:left;">
+<div class="col-md-12">
+        <span style='height: 22px;margin-bottom:20px;display:block;font:宋体;text-align:center;font-size:20px;font-weight: bold;margin-top: 20px;color:#05e4a1;' >实时交易信息</span>
+        </div>
+<div class="col-md-12 tradePennyShow" style="height: 420px;width: 365px;border: 1px solid #05e4a1;background-color: #FFEFDB;overflow:scroll;text-overflow:ellipsis;white-space:nowrap;">Loading.......
+</div>
+</div>
+<script>
+    $(function(){
+        var tradePennyShowUrl = 'ws://'+window.location.host+'/api/tradePennyShow';
+        var ws = new WebSocket(tradeOrderSetUrl);
+        
+        })
+</script>
