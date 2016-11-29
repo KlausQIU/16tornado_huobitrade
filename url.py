@@ -35,7 +35,7 @@ url += [(r"^/api/tradePennyShow", "handlers.ApiHandler.tradePennyShow")]
 url += [(r"^/api/handlerltc", "handlers.ApiHandler.handlerltcHandler")]
 url += [(r"^/api/PublicDealMessage", "handlers.ApiHandler.PublicDealMessage")]
 url += [(r"^/api/DrawProfit", "handlers.ApiHandler.DrawProfit")]
-url += [(r"^/api/HuobiLtcSell", "handlers.ApiHandler.HuobiLtcSell")]
+url += [(r"^/api/HuobiLtcTrade", "handlers.ApiHandler.HuobiLtcTrade")]
 
 
 

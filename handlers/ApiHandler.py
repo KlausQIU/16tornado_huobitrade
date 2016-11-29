@@ -396,10 +396,10 @@ class DrawProfit(BaseWebSocketHandler):
         print "DrawProfit websocket close"
 
 
-class HuobiLtcSell(BaseWebSocketHandler):
+class HuobiLtcTrade(BaseWebSocketHandler):
     clients = set()
     def open(self):
-        print 'HuobiLtcSell WebSocket Open'
+        print 'HuobiLtcTrade WebSocket Open'
         db,username = self.baseOpenDb()
         result = db.select('user',name= username)
         if result:
@@ -408,10 +408,11 @@ class HuobiLtcSell(BaseWebSocketHandler):
                 available_ltc_display = personalH.available_ltc_display
                 data = publicDataReturn()
                 tradePrice = data['ticker_ltc'] if data else 0
-                respon_json = tornado.escape.json_encode({"available_ltc_display":available_ltc_display,"tradePrice":tradePrice})
+                available_cny_display = personalH.available_cny_display
+                respon_json = tornado.escape.json_encode({"available_cny_display":available_cny_display,"available_ltc_display":available_ltc_display,"tradePrice":tradePrice})
                 self.write_message(respon_json)
             else:
-                respon_json = tornado.escape.json_encode({"available_ltc_display":0,"tradePrice":0})
+                respon_json = tornado.escape.json_encode({"available_cny_display":available_cny_display,"available_ltc_display":0,"tradePrice":0})
                 self.write_message(respon_json)
 
     def on_message(self,message):
@@ -419,12 +420,15 @@ class HuobiLtcSell(BaseWebSocketHandler):
         result = db.select('user',name = username)
         if result:
             message = json.loads(message)
-            print message
             personalH = pH.personalHandler(result[0][4],result[0][5])
-            ltcSellResult = personalH.ltcSell(message['SellCount'],message['SellPrice'])
-            if ltcSellResult:
-                if ltcSellResult['statu'] == 'success':
-                    respon_json = tornado.escape.json_encode({'msg':'success'})
+            if message['type'] == 'BuyHuobiLtc':
+                Result = personalH.ltcBuy(message['Count'],message['Price'])
+            elif message['type'] == 'SellHuobiLtc':
+                Result = personalH.ltcSell(message['Count'],message['Price'])
+            if Result:
+                if Result['statu'] == 'success':
+                    respon_json = tornado.escape.json_encode({'msg':'success','type':message['type']})
+                    print respon_json
                     self.write_message(respon_json)
                 else:
                     respon_json = tornado.escape.json_encode({'msg':'fail'})

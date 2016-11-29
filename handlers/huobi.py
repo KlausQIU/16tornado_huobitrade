@@ -11,6 +11,7 @@ from handlers.data_collection import db as d
 import time
 from strategy import personalHandler as pH
 from strategy.grid import fibonacci  as f
+from data_collection.publicData import publicDataReturn,ltcDataReturn
 
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
@@ -92,8 +93,6 @@ class entrustHandler(BaseHandler):
         db = d.db_control()
         result = db.select('user',name = username)
         if result:
-            ACCESS_KEY=result[0][4]
-            SECRET_KEY=result[0][5]
             personalH = pH.personalHandler(result[0][4],result[0][5])
             getOrders = personalH.getOrder if personalH.getOrder else {}
             if getOrders:
@@ -135,7 +134,6 @@ class gridHandler(BaseHandler):
         db = d.db_control()
         result = db.select('user',name = username)
         if result:
-            
             fibonacci = f(result[0][1])
             fResult = fibonacci.fibonacciResult
             self.render("gridBase.html",user=result,fibonacci=fResult)
@@ -153,6 +151,11 @@ class HuobiLtcHandler(BaseHandler):
         db = d.db_control()
         result = db.select('user',name = username)
         if result:
+            personalH = pH.personalHandler(result[0][4],result[0][5])
+            available_ltc_display = personalH.available_ltc_display
+            available_cny_display = personalH.available_cny_display
+            data = publicDataReturn()
+            tradePrice = data['ticker_ltc'] if data else 0
             self.render("huobiLtcBase.html",user=result)
         else:
             self.redirect('/login')

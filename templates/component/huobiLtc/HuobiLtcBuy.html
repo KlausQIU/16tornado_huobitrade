@@ -1,0 +1,63 @@
+<style>
+    .HuobiLtcBuyTitle{
+        font-size: 18x;
+        font-weight: bold;
+        color:#04964c;
+    }
+    .setting_span{
+        background:#6be6c1;
+        font-size:14px;
+        font-weight: bold;
+    }
+    .setting_input{
+        display: block; 
+    }
+    .setting_margin{
+        margin-bottom:30px;
+    }
+    .availableMoney{
+        font-size: 24px;
+        font-weight: bold;
+        color:#f10d0d;
+    }
+    .BuySet{
+        font-size: 16px;
+        font-weight: bold;
+        color:#FF4D90;
+    }
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+    background-image: none;
+    color: rgb(0, 0, 0);
+}
+</style>
+<div class="col-md-4 stats-info stats-info1" style="margin-bottom: 10px;float:left;margin-left: 20px;margin-right: 20px;" >
+        <div class="col-md-12" >
+        <span style='display:block;font:宋体;text-align:center;font-size:20px;font-weight: bold;margin-top: 20px;color:#05e4a1;' >限价买入<br><br></span>
+        </div>
+        <div class="col-md-12"><span class='HuobiLtcBuyTitle'>可用  <span class="availableCny"></span> CNY</span></div>
+        <div class="col-md-12 setting_margin">
+            <span class="input-group-addon setting_span" >买入价CNY/LTC</span>
+                <input type="text" name="BuyPrice" autocomplete="off" class="form-control1 setting_input BuySet" oninput="BuyChange(event)">
+        </div>
+        <div class="col-md-12 setting_margin">
+            <span class="input-group-addon setting_span">买入量LTC</span>
+            <input type="text" name="BuyCount" autocomplete="off" class="form-control1 setting_input BuySet" oninput="BuyChange(event)">
+        </div>
+        <div class="col-md-12 setting_margin">
+            <span class="input-group-addon setting_span">交易额</span>
+            <span name="BuyTradeMoney" style="margin-top: 5px;font-size: 18px;font-weight: bold;color:#f10d0d;text-align: center;display: block"></span>
+        </div>
+        <div class="col-md-12 setting_margin">
+        <button class="btn btn-info BuyHuobiLtc" name = "BuyHuobiLtc" style="margin:0 auto;display:block;">买入LTC</button>
+        </div>
+        </div>
+<script>
+
+function  BuyChange(event){
+    var BuyCount = $("input[name='BuyCount']").val();
+    var BuyPrice = $("input[name='BuyPrice']").val();
+   $("span[name='BuyTradeMoney']").text((parseFloat(BuyPrice)*parseFloat(BuyCount)).toFixed(2)+'  CNY');
+}
+
+</script>

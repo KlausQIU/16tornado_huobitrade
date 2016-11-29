@@ -116,17 +116,28 @@ class personalHandler():
             return bombprice
         return
 
+    '''
+    table:tradePenny
+    column: uid      type   coin amount     price     statu msg,order_id
+            self.uid,'Buy','LTC',sellCount,sellPrice, '0',  msg,result['id']
+    '''
+
     @openDB
     def ltcBuy(self,db,buyCount,buyPrice):
         try:
+            now = time.strftime(r'%Y/%m/%d %H:%M:%S',time.localtime())
             result = HuobiService.buy(2,buyPrice,buyCount,None,None,BUY,self.a_key,self.s_key)
-            msg = u'买入价格:%s,买入数量:%s,'%(buyPrice,buyCount)
-            if result.has_key('success') and self.uid:
-                msg += u'挂买单已成功'
-                db.insert('tradePenny',time.strftime('%Y%m%d%H%M%S',time.localtime()),self.uid,msg)
-            else:
-                msg += u'挂买单失败'
-                db.insert('tradePenny',time.strftime('%Y%m%d%H%M%S',time.localtime()),self.uid,msg)
+            msg = now + u'买入价格:%s,买入数量:%s,'%(buyPrice,buyCount)
+            if result:
+                if result['result'] == 'success' and type(self.uid) == int:
+                    msg += u'挂买单已成功'
+                    db.insert('tradePenny',self.uid,'Buy','LTC',buyCount,buyPrice,'0',msg,result['id'])
+                    result = {'statu':'success','SellPrice':buyPrice,'SellCount':buyCount}
+                else:
+                    msg += u'挂买单失败'
+                    db.insert('tradePenny',self.uid,'Buy','LTC',buyCount,buyPrice,'0',msg,None)
+                    result = {'statu':'fail'}
+                return result
         except BaseException as e:
             print 'ltcBuy wrong.',e            
 
@@ -139,15 +150,14 @@ class personalHandler():
             if result:
                 if result['result'] == 'success' and type(self.uid) == int:
                     msg += u'挂卖单成功'
-                    print msg
                     db.insert('tradePenny',self.uid,'Sell','LTC',sellCount,sellPrice,'0',msg,result['id'])   
                     result = {'statu':'success','SellPrice':sellPrice,'SellCount':sellCount}
-                    return result
+         
                 else:
                     msg += u'挂卖单失败'                
                     db.insert('tradePenny',self.uid,'Sell','LTC',sellCount,sellPrice,'0',msg,None)
                     result = {'statu':'fail'}
-                    return result
+                return result
         except BaseException as e:
             print 'ltcSell wrong.',e
             return None

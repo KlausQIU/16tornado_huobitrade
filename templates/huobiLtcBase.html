@@ -2,6 +2,7 @@
 {% block title %}主页{% end %}
 {% block content %}
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<script src="{{ static_url("js/huobiLtcBase/huobiTrade.js") }}"></script>
 <div id="wrapper">
      <!-- Navigation -->
         <nav class="top1 navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -24,6 +25,12 @@
         {% include component/accountInfo.html %}
   <div  class="col-md-12" style="margin-bottom: 20px">
      {% include component/huobiLtc/HuobiLtcSell.html %}
+    {% include component/huobiLtc/HuobiLtcBuy.html %}
+
+     <!-- {% include component/huobiLtc/ProfitGraph.html %} -->
+  </div>
+   <div  class="col-md-12" style="margin-bottom: 20px">
+     <!-- {% include component/huobiLtc/HuobiLtcSell.html %} -->
      {% include component/huobiLtc/ProfitGraph.html %}
   </div>
   <div class="clearfix"> </div>
@@ -34,7 +41,6 @@
         {% include component/footer.html %}
     </div>
    </div>
-
     <!-- /#wrapper -->
     <!-- Bootstrap Core JavaScript -->
 {% end %}

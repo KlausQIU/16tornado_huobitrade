@@ -182,7 +182,6 @@ if __name__ == '__main__':
     #db.creatTable('publicData','Time BLOB','DEALDATA BLOB','TICKERLTC BLOB','TICKERBTC BLOB','LTCTRADEVOL BLOB')
     #db.creatTable('privateData','uid BLOB','Time BLOB','NET_ASSET BLOB','PROFITRATE BLOB','TOTAL BLOB','BOMBPRICE BLOB')
     #db.creatTable('ltcData','Time BLOB','xBxisData BLOB','ltcData BLOB')
-    # db.creatTable('tradePenny','Time BLOB','uid BLOB','MSG BLOB')    
     # updateRow = {'access_key':'','secret_key':''}
     # selectRow = {'id':1}
     # db.update('user',updateRow,selectRow)

@@ -1,30 +1,10 @@
-<div class="col-md-8 span-8 col-xs-12 col-sm-12" style="height:500px;background-color: none;" >
-<div id="ProfitGraph" style="padding-left: 15px;background: #ffffff;height:500px;">
+<div class="col-md-12 col-xs-12 col-sm-12" style="height:500px;background-color: none;" >
+<div id="ProfitGraph" style="background: #ffffff;height:500px;">
 </div>
 </div>
 <script>
-var xAxisData,showdata,xBxisData,ltcData;
+var xAxisData,showdata;
 var ProfitGraph = echarts.init(document.getElementById("ProfitGraph"),'walden');
-var app = {};
-var handlerltcUrl = 'ws://'+window.location.host+'/api/handlerltc';
-var profitUrl = 'ws://'+window.location.host+'/api/Profit';
-function insert_flg(str,flg,sn){
-    var newstr="";
-    var tmp=str.substring(0,sn);
-    newstr =tmp+flg;
-    tmp = str.substring(sn);
-    newstr = newstr + tmp
-    return newstr;
-}
-function handlerltc(){
-    var handlerltcws = new WebSocket(handlerltcUrl);
-    handlerltcws.onmessage = function(event){
-    var data = JSON.parse(event.data);
-    data0 = data;
-    handlerltcws.close();
-    }
-}
-
 function splitData(rawData) {
     var xBxisData = [];
     var ltcData = []
@@ -55,20 +35,6 @@ function DrawProfit(){
         var data = JSON.parse(event.data);
         var xAxisData = data.xAxisData;
         var showdata = data.showdata;
-/***
-    var base = +new Date(1968, 9, 3);
-    var oneDay = 24 * 3600 * 1000;
-    var date = [];
-
-    var data = [Math.random() * 600];
-
-    for (var i = 1; i < 20000; i++) {
-        var now = new Date(base += oneDay);
-        date.push([now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'));
-        data.push(Math.round((Math.random() - 0.5) * 20 + data[i - 1]));
-}
-***/
-
 option = {
     tooltip: {
         trigger: 'axis',
