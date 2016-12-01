@@ -3,25 +3,25 @@
 $(function(){
 var HuobiLtcTradeUrl = 'ws://'+window.location.host+'/api/HuobiLtcTrade';
 var HuobiLtcTradews = new WebSocket(HuobiLtcTradeUrl)
+$(".SellHuobiLtc,.BuyHuobiLtc").click(HuobiLtcTrade);
+/***
 HuobiLtcTradews.onmessage = function(event){
     var data = JSON.parse(event.data);
     $("span.availableLtc").text(data.available_ltc_display)
     $("input[name='SellPrice']").val(data.tradePrice);
-    $("input[name='SellCount']").val(1);
+    $("input[name='SellCount']").val(data.available_ltc_display);
     $("span[name='SellTradeMoney']").text(parseFloat(data.tradePrice)+'  CNY')
     
     $("span.availableCny").text(data.available_cny_display)
     $("input[name='BuyPrice']").val(data.tradePrice);
     $("input[name='BuyCount']").val(1);
     $("span[name='BuyTradeMoney']").text(parseFloat(data.tradePrice)+'  CNY')
-    HuobiLtcTradews.close();
 }
-$(".SellHuobiLtc").click(HuobiLtcTrade);
-$(".BuyHuobiLtc").click(HuobiLtcTrade);
-})
+***/
+
+
 
 function HuobiLtcTrade(){
-    var HuobiLtcTradeUrl = 'ws://'+window.location.host+'/api/HuobiLtcTrade';
     var ws = new WebSocket(HuobiLtcTradeUrl)
     var SellCount,SellPrice,tradeMoney,BuyCount,BuyPrice
     var type = this.name
@@ -57,3 +57,4 @@ function HuobiLtcTrade(){
         ws.close()
     }
 }
+})

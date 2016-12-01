@@ -156,7 +156,7 @@ class HuobiLtcHandler(BaseHandler):
             available_cny_display = personalH.available_cny_display
             data = publicDataReturn()
             tradePrice = data['ticker_ltc'] if data else 0
-            self.render("huobiLtcBase.html",user=result)
+            self.render("huobiLtcBase.html",user=result,available_ltc_display = available_ltc_display,tradePrice = tradePrice,available_cny_display=available_cny_display)
         else:
             self.redirect('/login')
 

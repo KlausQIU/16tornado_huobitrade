@@ -148,12 +148,11 @@ class personalHandler():
             result = HuobiService.sell(2,sellPrice,sellCount,None,None,SELL,self.a_key,self.s_key)
             msg = now + u' 卖出价格:%s,卖出数量:%s,'%(sellPrice,sellCount)
             if result:
-                if result['result'] == 'success' and type(self.uid) == int:
+                if result.has_key('result') and type(self.uid) == int:
                     msg += u'挂卖单成功'
                     db.insert('tradePenny',self.uid,'Sell','LTC',sellCount,sellPrice,'0',msg,result['id'])   
                     result = {'statu':'success','SellPrice':sellPrice,'SellCount':sellCount}
-         
-                else:
+                elif result.has_key('msg'):
                     msg += u'挂卖单失败'                
                     db.insert('tradePenny',self.uid,'Sell','LTC',sellCount,sellPrice,'0',msg,None)
                     result = {'statu':'fail'}

@@ -400,20 +400,6 @@ class HuobiLtcTrade(BaseWebSocketHandler):
     clients = set()
     def open(self):
         print 'HuobiLtcTrade WebSocket Open'
-        db,username = self.baseOpenDb()
-        result = db.select('user',name= username)
-        if result:
-            if len(result[0][4]) == 32 and len(result[0][5]) == 32:
-                personalH = pH.personalHandler(result[0][4],result[0][5])
-                available_ltc_display = personalH.available_ltc_display
-                data = publicDataReturn()
-                tradePrice = data['ticker_ltc'] if data else 0
-                available_cny_display = personalH.available_cny_display
-                respon_json = tornado.escape.json_encode({"available_cny_display":available_cny_display,"available_ltc_display":available_ltc_display,"tradePrice":tradePrice})
-                self.write_message(respon_json)
-            else:
-                respon_json = tornado.escape.json_encode({"available_cny_display":available_cny_display,"available_ltc_display":0,"tradePrice":0})
-                self.write_message(respon_json)
 
     def on_message(self,message):
         db,username = self.baseOpenDb()
@@ -428,14 +414,18 @@ class HuobiLtcTrade(BaseWebSocketHandler):
             if Result:
                 if Result['statu'] == 'success':
                     respon_json = tornado.escape.json_encode({'msg':'success','type':message['type']})
-                    print respon_json
                     self.write_message(respon_json)
                 else:
                     respon_json = tornado.escape.json_encode({'msg':'fail'})
+                    print '11',respon_json
                     self.write_message(respon_json)
             else:
                 respon_json = tornado.escape.json_encode({'msg':'fail'})
+                print respon_json
                 self.write_message(respon_json)
+
+    def on_close(self):
+        print "HuobiLtcTrade websocket close"
  
 
 
