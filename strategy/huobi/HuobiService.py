@@ -19,11 +19,14 @@ def getAccountInfo(method,access_key,secret_key):
     del params['secret_key']
 
     payload = urllib.urlencode(params)
-    r = requests.post(HUOBI_SERVICE_API, params=payload)
-    if r.status_code == 200:
-        data = r.json()
-        return data
-    else:
+    try:
+        r = requests.post(HUOBI_SERVICE_API, params=payload,timeout=5)
+        if r.status_code == 200:
+            data = r.json()
+            return data
+        else:
+            return None
+    except:
         return None
 
 '''
@@ -47,11 +50,14 @@ def buy(coinType,price,amount,tradePassword,tradeid,method,access_key,secret_key
         params['trade_id']=tradeid
 
     payload = urllib.urlencode(params)
-    r = requests.post(HUOBI_SERVICE_API, params=payload)
-    if r.status_code == 200:
-        data = r.json()
-        return data
-    else:
+    try:
+        r = requests.post(HUOBI_SERVICE_API, params=payload,timeout=5)
+        if r.status_code == 200:
+            data = r.json()
+            return data
+        else:
+            return None
+    except:
         return None
 
 '''
@@ -75,11 +81,14 @@ def buyMarket(coinType,amount,tradePassword,tradeid,method,access_key,secret_key
     del params['secret_key']
 
     payload = urllib.urlencode(params)
-    r = requests.post(HUOBI_SERVICE_API, params=payload)
-    if r.status_code == 200:
-        data = r.json()
-        return data
-    else:
+    try:
+        r = requests.post(HUOBI_SERVICE_API, params=payload,timeout=5)
+        if r.status_code == 200:
+            data = r.json()
+            return data
+        else:
+            return None
+    except:
         return None
 
 
@@ -97,11 +106,14 @@ def cancelOrder(coinType,id,method,access_key,secret_key):
     del params['secret_key']
 
     payload = urllib.urlencode(params)
-    r = requests.post(HUOBI_SERVICE_API, params=payload)
-    if r.status_code == 200:
-        data = r.json()
-        return data
-    else:
+    try:
+        r = requests.post(HUOBI_SERVICE_API, params=payload,timeout=5)
+        if r.status_code == 200:
+            data = r.json()
+            return data
+        else:
+            return None
+    except:
         return None
 
 '''
@@ -116,11 +128,14 @@ def getNewDealOrders(coinType,method,access_key,secret_key):
     del params['secret_key']
 
     payload = urllib.urlencode(params)
-    r = requests.post(HUOBI_SERVICE_API, params=payload)
-    if r.status_code == 200:
-        data = r.json()
-        return data
-    else:
+    try:
+        r = requests.post(HUOBI_SERVICE_API, params=payload,timeout=5)
+        if r.status_code == 200:
+            data = r.json()
+            return data
+        else:
+            return None
+    except:
         return None
 
 '''
@@ -136,11 +151,14 @@ def getOrderIdByTradeId(coinType,tradeid,method,access_key,secret_key):
     del params['secret_key']
 
     payload = urllib.urlencode(params)
-    r = requests.post(HUOBI_SERVICE_API, params=payload)
-    if r.status_code == 200:
-        data = r.json()
-        return data
-    else:
+    try:
+        r = requests.post(HUOBI_SERVICE_API, params=payload,timeout=5)
+        if r.status_code == 200:
+            data = r.json()
+            return data
+        else:
+            return None
+    except:
         return None
 
 '''
@@ -155,11 +173,14 @@ def getOrders(coinType,method,access_key,secret_key):
     del params['secret_key']
 
     payload = urllib.urlencode(params)
-    r = requests.post(HUOBI_SERVICE_API, params=payload)
-    if r.status_code == 200:
-        data = r.json()
-        return data
-    else:
+    try:
+        r = requests.post(HUOBI_SERVICE_API, params=payload,timeout=5)
+        if r.status_code == 200:
+            data = r.json()
+            return data
+        else:
+            return None
+    except:
         return None
 
 '''
@@ -175,11 +196,14 @@ def getOrderInfo(coinType,id,method,access_key,secret_key):
     del params['secret_key']
 
     payload = urllib.urlencode(params)
-    r = requests.post(HUOBI_SERVICE_API, params=payload)
-    if r.status_code == 200:
-        data = r.json()
-        return data
-    else:
+    try:
+        r = requests.post(HUOBI_SERVICE_API, params=payload,timeout=5)
+        if r.status_code == 200:
+            data = r.json()
+            return data
+        else:
+            return None
+    except:
         return None
 
 '''
@@ -202,11 +226,14 @@ def sell(coinType,price,amount,tradePassword,tradeid,method,access_key,secret_ke
         params['trade_id']=tradeid
 
     payload = urllib.urlencode(params)
-    r = requests.post(HUOBI_SERVICE_API, params=payload)
-    if r.status_code == 200:
-        data = r.json()
-        return data
-    else:
+    try:
+        r = requests.post(HUOBI_SERVICE_API, params=payload,timeout=5)
+        if r.status_code == 200:
+            data = r.json()
+            return data
+        else:
+            return None
+    except:
         return None
 
 '''
@@ -229,11 +256,13 @@ def sellMarket(coinType,amount,tradePassword,tradeid,method,access_key,secret_ke
     del params['secret_key']
 
     payload = urllib.urlencode(params)
-    r = requests.post(HUOBI_SERVICE_API, params=payload)
-    if r.status_code == 200:
-        data = r.json()
-        return data
-    else:
+    try:
+        r = requests.post(HUOBI_SERVICE_API, params=payload,timeout=5)
+        if r.status_code == 200:
+            data = r.json()
+            return data
+        else:
+            return None
+    except:
         return None
-
 
