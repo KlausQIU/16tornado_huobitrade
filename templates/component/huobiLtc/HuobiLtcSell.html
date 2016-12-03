@@ -80,18 +80,18 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
     <div class="col-md-12">
  <ul id="HuobiLtcSellTab" class="nav nav-tabs"> 
     <li class="active">
-        <a href="#home" data-toggle="tab">
-            W3Cschool Home
+        <a href = "#Sell" data-toggle="tab" style='display:block;font:宋体;text-align:center;font-size:20px;font-weight: bold;color:#05e4a1;' >
+            限价卖出
         </a>
     </li>
-    <li><a href="#ios" data-toggle="tab">iOS</a></li>
-    <li class="active"><a href = "#Sell" data-toggle="tab" style='display:block;font:宋体;text-align:center;font-size:20px;font-weight: bold;color:#05e4a1;' >限价卖出</a></li>
-        <li><a href="#marketSell" data-toggle="tab" style='display:block;font:宋体;text-align:center;font-size:20px;font-weight: bold;color:#05e4a1;' >市价卖出</a></li>
+    <li>
+        <a href="#marketSell" data-toggle="tab" style='display:block;font:宋体;text-align:center;font-size:20px;font-weight: bold;color:#05e4a1;' >
+            市价卖出
+        </a>
+    </li>
 </ul>
-</div>
 <div id="myTabContent" class="tab-content">
-    <div class="tab-pane fade in active" id="home">
-        <div id="Sell" class="tab-pane fade in active">
+    <div id="Sell" class="tab-pane fade in active">
         <div class="col-md-12"><span class='HuobiLtcSellTitle'>可用  <span class="availableLtc">{{ available_ltc_display }}</span> LTC</span></div>
         <div class="col-md-12 setting_margin">
             <span class="input-group-addon setting_span" >卖出价CNY/LTC</span>
@@ -109,10 +109,24 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
         <button class="btn btn-info SellHuobiLtc" name="SellHuobiLtc" style="margin:0 auto;display:block;">卖出LTC</button>
         </div>
         </div>
-    </div>
-    <div class="tab-pane fade" id="ios">
-        <p>iOS 是一个由苹果公司开发和发布的手机操作系统。最初是于 2007 年首次发布 iPhone、iPod Touch 和 Apple 
-            TV。iOS 派生自 OS X，它们共享 Darwin 基础。OS X 操作系统是用在苹果电脑上，iOS 是苹果的移动版本。</p>
+    <div id="Sell" class="tab-pane fade">
+        <div class="col-md-12"><span class='HuobiLtcSellTitle'>可用  <span class="availableLtc">{{ available_ltc_display }}</span> LTC</span></div>
+        <div class="col-md-12 setting_margin">
+            <span class="input-group-addon setting_span" >卖出价CNY/LTC</span>
+                <input type="text" name="SellPrice" autocomplete="off" class="form-control1 setting_input SellSet" oninput="SellChange(event)" value = "{{ tradePrice }}">
+        </div>
+        <div class="col-md-12 setting_margin">
+            <span class="input-group-addon setting_span">卖出量LTC</span>
+            <input type="text" name="SellCount" autocomplete="off" class="form-control1 setting_input SellSet" oninput="SellChange(event)" value="{{ available_ltc_display }}">
+        </div>
+        <div class="col-md-12 setting_margin">
+            <span class="input-group-addon setting_span">交易额</span>
+            <span name="SellTradeMoney" style="margin-top: 5px;font-size: 18px;font-weight: bold;color:#f10d0d;text-align: center;display: block"></span>
+        </div>
+        <div class="col-md-12 setting_margin">
+        <button class="btn btn-info SellHuobiLtc" name="SellHuobiLtc" style="margin:0 auto;display:block;">卖出LTC</button>
+        </div>
+        </div>
     </div>
 </div>
 </div>
