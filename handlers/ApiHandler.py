@@ -310,7 +310,7 @@ class coinDataHandler(BaseWebSocketHandler):
     clients = set()
     def open(self):
         print 'coinDataHandler websocket Open'
-        self.coinData = tornado.ioloop.PeriodicCallback(self.SentData, 3000)
+        self.coinData = tornado.ioloop.PeriodicCallback(self.SentData, 5000)
         self.coinData.start()
 
     def SentData(self):
