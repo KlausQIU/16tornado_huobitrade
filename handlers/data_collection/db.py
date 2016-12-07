@@ -182,14 +182,18 @@ if __name__ == '__main__':
     #db.creatTable('publicData','Time BLOB','DEALDATA BLOB','TICKERLTC BLOB','TICKERBTC BLOB','LTCTRADEVOL BLOB')
     #db.creatTable('privateData','uid BLOB','Time BLOB','NET_ASSET BLOB','PROFITRATE BLOB','TOTAL BLOB','BOMBPRICE BLOB')
     #db.creatTable('ltcData','Time BLOB','xBxisData BLOB','ltcData BLOB')
+    #{u'status': 2, u'order_time': 1481013283, u'order_amount': u'1.0000', u'last_processed_time': 1481013836, u'order_price': u'24.47', u'type': 2, u'id': 385718198, u'processed_amount': u'1.0000'}
+    # db.creatTable('dealOrder','uid BLOB','time BLOB','order_id integer','order_time BLOB','last_processed_time BLOB','order_amount BLOB','order_price BLOB','type BLOB')
     # updateRow = {'access_key':'','secret_key':''}
     # selectRow = {'id':1}
     # db.update('user',updateRow,selectRow)
-    c = db.select('profitData',id=0)
+    c = db.select('dealOrder',uid=0)
     for d in c:
-        if float(d[4]) == 0:
+        if float(d[4]):
             print d
-    db.delete('profitData',Profit='0')
+            print time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(float(d[4])))
+    # db.creatTable('test','uid BLOB','count BLOB')
+    # db.delete('dealOrder',uid='0')
     # print c
     #db.insert('AllStrategy',0,'false','false')
     #db.delete('profitData',Profit=u'1150.87')

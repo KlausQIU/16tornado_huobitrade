@@ -65,11 +65,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
         </div>
         </div>
     <div id="marketSell" class="tab-pane fade">
-        <div class="col-md-12"><span class='HuobiLtcSellTitle'>111可用  <span class="availableLtc">{{ available_ltc_display }}</span> LTC</span></div>
-        <div class="col-md-12 setting_margin">
-            <span class="input-group-addon setting_span" >卖出价CNY/LTC</span>
-                <input type="text" name="SellPrice" autocomplete="off" class="form-control1 setting_input SellSet" oninput="SellChange(event)" value = "{{ tradePrice }}">
-        </div>
+        <div class="col-md-12"><span class='HuobiLtcSellTitle'>可用  <span class="availableLtc">{{ available_ltc_display }}</span> LTC</span></div>
         <div class="col-md-12 setting_margin">
             <span class="input-group-addon setting_span">卖出量LTC</span>
             <input type="text" name="SellCount" autocomplete="off" class="form-control1 setting_input SellSet" oninput="SellChange(event)" value="{{ available_ltc_display }}">

@@ -170,18 +170,24 @@ class tradeSetInfo(BaseWebSocketHandler):
             respon_json = tornado.escape.json_encode(result)
             self.write_message(respon_json)
 
-class dealMessage(BaseWebSocketHandler):
+class dealOrders(BaseWebSocketHandler):
     clients = set()
     def open(self):
-        print 'dealMessage wesocket Open'
+        print 'dealOrders websocket Open'
         db,username = self.baseOpenDb()
-        result = db.select('user',name = username)
-        if result:
-            personalH = pH.personalHandler(result[0][4],result[0][5])
-            dealOrders = personalH.DealOrder(2) if personalH.DealOrder(2) else {}
-            respon_json = tornado.escape.json_encode(dealOrders)
-            self.write_message(respon_json)
-            self.on_close()
+        uid = (db.select('user',name = username))[0][1]
+        dealOrders = db.select('dealOrder',uid=uid)
+        self.dealOrderData = tornado.ioloop.PeriodicCallback(self.SentData, 5000)
+        self.dealOrderData.start()
+
+    def SentData(self):
+
+        respon_json = tornado.escape.json_encode(message)
+        self.write_message(respon_json)
+
+    def on_close(self):
+        print "coinDataHandler websocket close"
+        self.coinData.stop()
 
 class avatarInfo(BaseWebSocketHandler):
     clients = set()

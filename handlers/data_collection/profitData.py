@@ -30,6 +30,8 @@ def ProfitDataCollection():
                     setting = db.select('SETTING',UID=user[1])
                     count = max([item[0] for item in profitData])+1 if profitData else 0
                     profit = personalH.profit
+                    if profit == 0:
+                        return
                     db.insert('profitData',count,time.strftime('%Y%m%d%H%M%S',time.localtime()),setting[0][0],setting[0][0],profit)
                 else:
                     for n in timeRun:
@@ -42,6 +44,8 @@ def ProfitDataCollection():
                             setting = db.select('SETTING',UID=user[1])
                             count = max([item[0] for item in profitData])+1 if profitData else 0
                             profit = personalH.profit
+                            if profit == 0:
+                                return
                             db.insert('profitData',count,time.strftime('%Y%m%d%H%M%S',time.localtime()),setting[0][0],setting[0][0],profit)
             else:
                 pass

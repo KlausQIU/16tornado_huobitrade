@@ -95,17 +95,6 @@ class personalHandler():
         except BaseException as e:
             print u'cancel order detect trouble!!',e
 
-    def DealOrder(self,coinType):
-        try:
-            result = HuobiService.getNewDealOrders(coinType, NEW_DEAL_ORDERS, self.a_key,self.s_key)
-            if result:
-                result.sort(key=operator.itemgetter('last_processed_time'),reverse=True)  
-                return result
-            else:
-                return {'result':'fail'}
-        except BaseException as e:
-            print e
-            return {}
 
     def BombPrice(self):
         if self.loan_ltc_display and self.total:
@@ -205,8 +194,47 @@ class personalHandler():
                 print u'liquidation price wrong,',e
                 return
 
+    @openDB
+    def dealOrder(self,db):
+        try:
+            dealOrders = (HuobiService.getNewDealOrders(2,NEW_DEAL_ORDERS,self.a_key,self.s_key))
+        except BaseException as e:
+            print u'PH dealOrder:无法获取最近成交单',e
+            dealOrders = None
+        DBdealOrders = db.select('dealOrder',uid=self.uid)
+        resultOrder = []
+        collectOrderId = []
+        if dealOrders:
+            dealOrders.sort(key=lambda i:float(i['last_processed_time']))
+            if DBdealOrders:
+                for order in dealOrders:
+                    collectOrderId.append(order['id'])
+                    #数据库表里的第一条数据的order_id跟新获取的数据做比对
+                    if DBdealOrders[-1][2] == order['id']:
+                        orderIndex = dealOrders.index(order)
+                        if orderIndex < 9:
+                            for i in range(orderIndex+1,10):
+                                print dealOrders[i]
+                                resultOrder.append(dealOrders[i])
+                            return resultOrder
+                        else:
+                            return None
+                if DBdealOrders[-1][2] not in collectOrderId:
+                    return dealOrders
+            else:
+                return dealOrders
+        return None    
+
+
+
 if __name__ == '__main__':
+    import sys
+    default_encoding = 'utf-8'
+    if sys.getdefaultencoding() != default_encoding:
+        reload(sys)
+        sys.setdefaultencoding(default_encoding)
+
     p = personalHandler('d76242eb-d39e3b03-6341baee-64707', 'ca3624e3-54cde80d-aee1edcd-e5ddd')
     p.__init__('d76242eb-d39e3b03-6341baee-64707', 'ca3624e3-54cde80d-aee1edcd-e5ddd')
     print p.freightSpace
-    print p.ltc_total
+    print p.dealOrder()

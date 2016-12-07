@@ -34,7 +34,13 @@ def main():
                     net_asset = personalH.net_asset
                     total = personalH.total
                     bombprice = personalH.BombPrice()
-                    dbLink.insert('privateData',user[1],time.strftime('%Y%m%d%H%M%S',time.localtime()),net_asset,ProfitRate,total,bombprice)
+                    str_now = time.strftime('%Y%m%d%H%M%S',time.localtime())
+                    dbLink.insert('privateData',user[1],str_now,net_asset,ProfitRate,total,bombprice)
+                    dealOrders = personalH.dealOrder()
+                    if dealOrders:
+                        for order in dealOrders:
+                            # 'uid BLOB','time BLOB','order_id integer','order_time BLOB','last_processed_time BLOB','order_amount BLOB','order_price BLOB','type BLOB'
+                            dbLink.insert('dealOrder',user[1],str_now,order['id'],order['order_time'],order['last_processed_time'],order['order_amount'],order['order_price'],order['type'])
                 except BaseException as e:
                     print u'huobi api fxcking shit again!',e
         privateData = dbLink.select('privateData')
