@@ -36,5 +36,15 @@
 <style>
 </style>
 <script>
-
+var dealOrdersUrl = 'ws://'+window.location.host+'/api/dealOrders';
+var dealOrdersWS = new WebSocket(dealOrdersUrl);
+dealOrdersWS.onmessage = function(event){
+        var data = JSON.parse(event.data);
+        $.each(data,function(index,item){
+            dealdata.push(item['order_price'])
+            var d = new Date(item['last_processed_time'] * 1000);
+            var date = (d.getHours()) + ":" + (d.getMinutes())
+            xCxisData.push(date)
+            })
+    } 
 </script>

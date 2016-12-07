@@ -206,14 +206,17 @@ if __name__ == '__main__':
     # selectRow = {'id':1}
     # db.update('user',updateRow,selectRow)
     c = db.select('dealOrder',uid=0)
-    print c[-5:]
+    print len(c)
     # for d in c:
     #     if float(d[4]):
     #         print d
     #         print time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(float(d[4])))
     # db.delete('dealOrder',uid='0')
-    result = db.run('SELECT * FROM dealOrder WHERE uid="0" order by "last_processed_time" asc limit 0,10')
-    print result
+    result = db.run('SELECT * FROM dealOrder WHERE uid="0" order by "last_processed_time" desc limit 0,20')
+    b = 0
+    for i in result:
+        print b,i
+        b += 1
     
     #db.insert('AllStrategy',0,'false','false')
     #db.delete('profitData',Profit=u'1150.87')
