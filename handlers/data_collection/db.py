@@ -163,6 +163,24 @@ class db_control():
             print u'update fail',e
             return {'msg':['fail',e]}
 
+    @intailze
+    def run(self,sql):
+        try:   
+            result = self.cursor.execute(sql)
+            self.cx.commit()
+            print u'run success'
+            rowlist = []
+            for row in result:
+                if len(row) == 0:
+                    return []
+                rowlist.append(list(row))
+            self.cursor.close()
+            self.cx.close()
+            return rowlist if rowlist else {'msg':'success'}
+        except BaseException as e:
+            print u'run fail',e
+            return {'msg':['fail',e]}
+
     def close(self):
         try:
             self.cursor.close()
@@ -188,13 +206,15 @@ if __name__ == '__main__':
     # selectRow = {'id':1}
     # db.update('user',updateRow,selectRow)
     c = db.select('dealOrder',uid=0)
-    for d in c:
-        if float(d[4]):
-            print d
-            print time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(float(d[4])))
-    # db.creatTable('test','uid BLOB','count BLOB')
+    print c[-5:]
+    # for d in c:
+    #     if float(d[4]):
+    #         print d
+    #         print time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(float(d[4])))
     # db.delete('dealOrder',uid='0')
-    # print c
+    result = db.run('SELECT * FROM dealOrder WHERE uid="0" order by "last_processed_time" asc limit 0,10')
+    print result
+    
     #db.insert('AllStrategy',0,'false','false')
     #db.delete('profitData',Profit=u'1150.87')
     #print min(item[4] for item in db.select('profitData'))
