@@ -1,12 +1,13 @@
-<div class="col-md-8 span-8 col-xs-8 col-sm-8" >
-    <div id="myProfit" style="width: 680px;height:460px;" class="col-md-12 span-12 col-xs-12 col-sm-12">
-
+<div class="col-md-8 span-8 col-xs-12 col-sm-12" style="height:434px;background-color: none;" >
+<div id="LitecoinGraph" style="padding-left: 15px;background: #ffffff;height:434px;">
+</div>
+</div>
 <script>
-var xAxisData = [];
-var showdata = [];
-var myProfit = echarts.init(document.getElementById("myProfit"),'walden');
+var xAxisData,showdata,xBxisData,ltcData;
+var myProfit = echarts.init(document.getElementById("LitecoinGraph"),'walden');
 var app = {};
-var data0 = [];
+var handlerltcUrl = 'ws://'+window.location.host+'/api/handlerltc';
+var profitUrl = 'ws://'+window.location.host+'/api/Profit';
 function insert_flg(str,flg,sn){
     var newstr="";
     var tmp=str.substring(0,sn);
@@ -16,13 +17,12 @@ function insert_flg(str,flg,sn){
     return newstr;
 }
 function handlerltc(){
-    var handlerltcUrl = 'ws://'+window.location.host+'/api/handlerltc'
-        var handlerltcws = new WebSocket(handlerltcUrl);
-        handlerltcws.onmessage = function(event){
-        var data = JSON.parse(event.data);
-        data0 = splitData(data);
-        handlerltcws.close();
-        }
+    var handlerltcws = new WebSocket(handlerltcUrl);
+    handlerltcws.onmessage = function(event){
+    var data = JSON.parse(event.data);
+    data0 = data;
+    handlerltcws.close();
+    }
 }
 
 function splitData(rawData) {
@@ -46,48 +46,18 @@ function splitData(rawData) {
     };
 }
 
-function calculateMA(dayCount) {
-    var result = [];
-    for (var i = 0, len = data0.ltcData.length; i < len; i++) {
-        if (i < dayCount) {
-            result.push('-');
-            continue;
-        }
-        var sum = 0;
-        for (var j = 0; j < dayCount; j++) {
-            sum += data0.ltcData[i - j][1];
-        }
-        result.push(sum / dayCount);
-    }
-    return result;
-}
-
-var dealUrl = 'ws://'+window.location.host+'/api/dealMessage'
-var dealws = new WebSocket(dealUrl);
-dealdata = [];
-xCxisData = [];
-
-dealws.onmessage = function(event){
-        var data = JSON.parse(event.data);
-        $.each(data,function(index,item){
-            dealdata.push(item['order_price'])
-            var d = new Date(item['last_processed_time'] * 1000);
-            var date = (d.getHours()) + ":" + (d.getMinutes())
-            xCxisData.push(date)
-            })
-    } 
-function handlerProfit(){
-    var profitUrl = 'ws://'+window.location.host+'/api/Profit'
-    var profitWs = new WebSocket(profitUrl);
+function DrawLTCProfit(){
+    var handlerltcws = new WebSocket(handlerltcUrl);
+    handlerltcws.onmessage = function(event){
     xAxisData = [];
     showdata = [];
-    profitWs.onmessage = function(event) {
-        var data = JSON.parse(event.data);
-        $.each(data,function(index,item){
-            xAxisData.push(item[1].toString().substring(8,10)+':'+item[1].toString().substring(10,12))
-            showdata.push(item[4])
-            })
-        profitWs.close();
+    ltcData = [];
+    xBxisData = [];
+    var data = JSON.parse(event.data);
+    ltcData = data.ltcData;
+    xAxisData = data.xAxisData
+    xBxisData = data.xBxisData
+    showdata = data.showdata
     option = {
     title: {
         text: '收益率/LTC',
@@ -109,7 +79,7 @@ function handlerProfit(){
     },
     xAxis: {
         type: 'category',
-        data: data0.xBxisData,
+        data: xBxisData,
         scale: true,
         boundaryGap : false,
         axisLine: {onZero: false},
@@ -136,7 +106,7 @@ function handlerProfit(){
             axisLabel: {
                 formatter: '{value}'
             },
-            max:60,
+            max:160,
             //min:0,
         }
     ],
@@ -159,7 +129,7 @@ function handlerProfit(){
         {
             name: 'LTC',
             type: 'candlestick',
-            data: data0.ltcData,
+            data: ltcData,
             markPoint: {
                 
                 data: [
@@ -237,23 +207,18 @@ function handlerProfit(){
 
     ]
 };
+
 if (option && typeof option === "object") {
             myProfit.setOption(option, true);
             window.onresize = myProfit.resize;
         }
 }
 }
-
 $(function(){
-  handlerProfit()
-  handlerltc()
-  setInterval("handlerltc()",30000);
-  setInterval("handlerProfit()",30000);
+  DrawLTCProfit();
 })
 </script>
-<div class="clearfix"> </div>
-</div>
-</div>
+
 
 
 

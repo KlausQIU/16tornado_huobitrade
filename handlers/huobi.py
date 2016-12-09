@@ -32,7 +32,7 @@ class HuobiHandler(BaseHandler):
             personalH = pH.personalHandler(result[0][4],result[0][5])
             getOrders = personalH.getOrder if personalH.getOrder else {}
             getOrders.sort(key=lambda i:float(i['order_price'])) if getOrders else {}
-            dealOrders = personalH.DealOrder(2) if personalH.DealOrder(2) else {}
+            dealOrders = personalH.dealOrder() if personalH.dealOrder() else {}
             mount=' ' if len(getOrders) == 0 else '('+'%s'%(len(getOrders))+')'
             self.render("index.html",orders=getOrders,mount=mount,dealOrders=dealOrders,user=result)
         else:

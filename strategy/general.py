@@ -9,7 +9,7 @@ def float_format(number):
 
 
 PublicData = None
-listJudgeData = None
+dlistJudgeData = None
 
 def judgeData(data): 
     global PublicData
@@ -17,6 +17,7 @@ def judgeData(data):
         PublicData = data
         return data
     else:
+        
         if data == PublicData:
             return None
         else:
@@ -29,15 +30,26 @@ def float_format(number):
 
 
 #列表的数据对比，输出listdata的不同值
-def listJudge(listData):
+def doubleListJudge(listData):
+    global dlistJudgeData
     if type(listData) == list:
-        if not listData:
-            listJudgeData = listData
-            return listJudgeData
+        if not dlistJudgeData:
+            tupleData = []
+            if type(listData[0]) == list:
+                for i in listData:
+                    tupleData.append(tuple(i))
+            dlistJudgeData = tupleData if tupleData else listData
+            return listData
         else:
-            diff = list(set(listData).difference(set(listJudgeData)))
-            listJudgeData = listData
+            tupleData = []
+            if type(listData[0]) == list:
+                for i in listData:
+                    tupleData.append(tuple(i))
+            diff = list(set(tupleData).difference(set(dlistJudgeData)))
+            dlistJudgeData = tupleData if tupleData else listData
             return diff if diff else None
+
+
 
 
 if __name__ == '__main__':

@@ -1,4 +1,4 @@
-7#!/usr/bin/env python
+#!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
 import tornado.web
@@ -183,8 +183,7 @@ class dealOrders(BaseWebSocketHandler):
         dealOrders = db.select('dealOrder',uid=uid)
         sql = 'SELECT * FROM dealOrder WHERE uid="%s" order by "last_processed_time" desc limit 0,10'%(uid)
         result = db.run(sql)
-        #跟之前传到前端的数据做对比
-        message = listJudge(result)
+        message = general.doubleListJudge(result)
         if message:
             respon_json = tornado.escape.json_encode(message)
             self.write_message(respon_json)
@@ -296,25 +295,34 @@ class tradePennyShow(BaseWebSocketHandler):
     clients = set()
     def open(self):
         print 'tradePennyShow websocket Open'
+        self.judge = None
+        self.showMessage = tornado.ioloop.PeriodicCallback(self.SentData, 8000)
+        self.showMessage.start()
 
-    def on_message(self,message):
+    def SentData(self):
         db,username = self.baseOpenDb()
         result = db.select('user',name = username)
         if result:
-            message = json.loads(message)
-            print message
-            updateRow = {'PriceDict':str(message)}
-            selectRow = {'UID':result[0][1]}
-            SResult = db.update("SETTING",updateRow,selectRow)
-            print SResult
-            if SResult['msg'] == 'success':
-                respon_json = tornado.escape.json_encode(SResult)
-                self.write_message(respon_json)
-                self.on_close()
-            else:
-                result = tornado.escape.json_encode({'msg':'fail'})
-                self.write_message(result)
-                self.on_close()
+            print result[0][1]
+            sql = 'SELECT * FROM dealOrder WHERE uid="%s" order by "last_processed_time" desc limit 0,20'%(result[0][1])
+            data = db.run(sql)
+            if data:
+                order_id = data[0][2]
+                print order_id
+                print self.judge
+                if self.judge:
+                    if order_id == self.judge:
+                        return
+                    respon_json = tornado.escape.json_encode(data[0])
+                    self.write_message(respon_json)
+                    self.judge = order_id                
+                else:
+                    self.judge = order_id 
+
+    def on_close(self):
+        print "tradePennyShow websocket close"
+        self.showMessage.stop()
+
 
 class coinDataHandler(BaseWebSocketHandler):
     clients = set()

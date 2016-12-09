@@ -30,8 +30,7 @@ class personalHandler():
             self.account_info = HuobiService.getAccountInfo(ACCOUNT_INFO,access_key,secret_key)
             #委托单信息
             self.getOrder = HuobiService.getOrders(2,GET_ORDERS,access_key,secret_key)
-            #借用的杠杆币
-            
+            #借用的杠杆币          
             if self.account_info:
                 self.available_cny_display = float(self.account_info['available_cny_display']) if self.account_info.has_key('available_cny_display') else 0
                 self.loan_cny_display = float(self.account_info['loan_cny_display']) if self.account_info.has_key('loan_cny_display') else None
@@ -116,15 +115,15 @@ class personalHandler():
         try:
             now = time.strftime(r'%Y/%m/%d %H:%M:%S',time.localtime())
             result = HuobiService.buy(2,buyPrice,buyCount,None,None,BUY,self.a_key,self.s_key)
-            msg = now + u'买入价格:%s,买入数量:%s,'%(buyPrice,buyCount)
+            #msg = now + u'\n 买入价格:%s,买入数量:%s,'%(buyPrice,buyCount)
             if result:
                 if result['result'] == 'success' and type(self.uid) == int:
-                    msg += u'挂买单已成功'
-                    db.insert('tradePenny',self.uid,'Buy','LTC',buyCount,buyPrice,'0',msg,result['id'])
+                    #msg += u'挂买单已成功'
+                    #db.insert('tradePenny',self.uid,'Buy','LTC',buyCount,buyPrice,'0',msg,result['id'])
                     result = {'statu':'success','SellPrice':buyPrice,'SellCount':buyCount}
                 else:
-                    msg += u'挂买单失败'
-                    db.insert('tradePenny',self.uid,'Buy','LTC',buyCount,buyPrice,'0',msg,None)
+                    #msg += u'挂买单失败'
+                    #db.insert('tradePenny',self.uid,'Buy','LTC',buyCount,buyPrice,'0',msg,None)
                     result = {'statu':'fail'}
                 return result
         except BaseException as e:

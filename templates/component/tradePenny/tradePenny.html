@@ -8,6 +8,15 @@
 <script>
 $(function(){
     var tradePennyShowUrl = 'ws://'+window.location.host+'/api/tradePennyShow';
-    var ws = new WebSocket(tradeOrderSetUrl);
+    var tradePennyShowWS = new WebSocket(tradePennyShowUrl);
+    tradePennyShowWS.onmessage = function(event){
+        var data = JSON.parse(event.data);
+        if(data){
+            $('.tradePennyShow').text('')
+            console.log(data)
+            var newMessage = '<li>'+data[8].substring(10)+'</li>';
+            $('.tradePennyShow').append(newMessage);
+        }
+    }
     })
 </script>

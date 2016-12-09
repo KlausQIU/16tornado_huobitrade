@@ -168,7 +168,6 @@ class db_control():
         try:   
             result = self.cursor.execute(sql)
             self.cx.commit()
-            print u'run success'
             rowlist = []
             for row in result:
                 if len(row) == 0:
@@ -196,36 +195,39 @@ if __name__ == '__main__':
     #db.creatTable('user','id integer primary key','uid integer','name varchar(10) UNIQUE','password TEXT','access_key text UNIQUE','secret_key text UNIQUE')
     #db.creatTable('huobi','id integer primary key','uid integer','name varchar(10) UNIQUE','password TEXT','access_key text UNIQUE','secret_key text UNIQUE')
     #db.creatTable('AllStrategy','uid integer','Grid BLOB','TradePenny BLOB')
-    #db.creatTable('TradePenny','uid integer','BuyOrSell BLOB','Coin Blob','Amount BLOB','Price BLOB','Status Blob')
+    #db.creatTable('tradePenny','uid integer','BuyOrSell BLOB','Coin Blob','Amount BLOB','Price BLOB','Status Blob','msg BLOB','order_id BLOB')
     #db.creatTable('publicData','Time BLOB','DEALDATA BLOB','TICKERLTC BLOB','TICKERBTC BLOB','LTCTRADEVOL BLOB')
     #db.creatTable('privateData','uid BLOB','Time BLOB','NET_ASSET BLOB','PROFITRATE BLOB','TOTAL BLOB','BOMBPRICE BLOB')
     #db.creatTable('ltcData','Time BLOB','xBxisData BLOB','ltcData BLOB')
     #{u'status': 2, u'order_time': 1481013283, u'order_amount': u'1.0000', u'last_processed_time': 1481013836, u'order_price': u'24.47', u'type': 2, u'id': 385718198, u'processed_amount': u'1.0000'}
     # db.creatTable('dealOrder','uid BLOB','time BLOB','order_id integer','order_time BLOB','last_processed_time BLOB','order_amount BLOB','order_price BLOB','type BLOB')
+    # db.creatTable('dealOrder','uid BLOB','time INTEGER','order_id integer','order_time BLOB','last_processed_time BLOB','order_amount BLOB','order_price BLOB','type BLOB','msg text')
+    #db.run('insert into "dealOrder" selete * from "dealOrderOld"')
     # updateRow = {'access_key':'','secret_key':''}
     # selectRow = {'id':1}
     # db.update('user',updateRow,selectRow)
-    c = db.select('dealOrder',uid=0)
+    #c = db.run('SELECT * FROM dealOrder WHERE uid="0" order by "last_processed_time" desc limit 0,20')
+    c = db.run('select * from dealOrder where uid="0" and time >= "20161209000000"')
     print len(c)
+    for i in c:
+        print c.index(i),i
     # for d in c:
     #     if float(d[4]):
     #         print d
     #         print time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(float(d[4])))
     # db.delete('dealOrder',uid='0')
-    result = db.run('SELECT * FROM dealOrder WHERE uid="0" order by "last_processed_time" desc limit 0,20')
-    b = 0
-    for i in result:
-        print b,i
-        b += 1
-    
+    # result = db.run('SELECT * FROM dealOrder WHERE uid="0" order by "last_processed_time" desc limit 0,20')
+    # sql = 'SELECT * FROM tradePenny WHERE uid="0" order by "last_processed_time" desc limit 0,20'
+    # result = db.run(sql)
+    # print result
     #db.insert('AllStrategy',0,'false','false')
     #db.delete('profitData',Profit=u'1150.87')
     #print min(item[4] for item in db.select('profitData'))
-    # updateRow = {'PriceDict':'BLOB'}
-    # d = db.alert('SETTING', updateRow)
+    # updateRow = {'msg':'BLOB'}
+    # d = db.alert('dealOrder', updateRow)
     # print d
     # #sqlRun = 'PRAGMA table_info([SETTING])'
-    # d = db.pragma('tradePenny')
+    # d = db.pragma('dealOrder')
     # print d
     # updateRow = {'order_id':'BLOB'}
     # db.alert('tradePenny',updateRow)

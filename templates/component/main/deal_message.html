@@ -16,7 +16,17 @@
                     </tr>
                 </thead>
                 <tbody id="order_list">
-                {% try %}
+                <!-- <tr>
+                    <td class="entrust_time"></td>
+                     <td class="align_left"><span class=""></span></td>
+                     <td class="order_price" style="text-align: center;"></td>
+                    <td class="deal_price" style="text-align: center;"></td>
+                    <td class="processed_amount" style="text-align: center;"></td>
+                    <td class="total" style="text-align: center;"></td>
+                    </tr> -->
+                    </tbody>    
+                    </table>    
+                   <!--  {% try %}
                 {% for order in dealOrders %}
                     <tr>
                         <td class="entrust_time">{% import time %}{{ time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(order['last_processed_time'])) }}</td>
@@ -28,9 +38,7 @@
                     </tr>
                     {% end %}
                 {% except %}
-                {% end %}
-                    </tbody>    
-                    </table>    
+                {% end %} -->
 </div>
 </div>
 <style>
@@ -41,10 +49,7 @@ var dealOrdersWS = new WebSocket(dealOrdersUrl);
 dealOrdersWS.onmessage = function(event){
         var data = JSON.parse(event.data);
         $.each(data,function(index,item){
-            dealdata.push(item['order_price'])
-            var d = new Date(item['last_processed_time'] * 1000);
-            var date = (d.getHours()) + ":" + (d.getMinutes())
-            xCxisData.push(date)
+            
             })
     } 
 </script>
