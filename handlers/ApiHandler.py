@@ -174,7 +174,7 @@ class dealOrders(BaseWebSocketHandler):
     clients = set()
     def open(self):
         print 'dealOrders websocket Open'
-        self.dealOrderData = tornado.ioloop.PeriodicCallback(self.SentData, 5000)
+        self.dealOrderData = tornado.ioloop.PeriodicCallback(self.SentData, 3000)
         self.dealOrderData.start()
 
     def SentData(self):
@@ -183,14 +183,18 @@ class dealOrders(BaseWebSocketHandler):
         dealOrders = db.select('dealOrder',uid=uid)
         sql = 'SELECT * FROM dealOrder WHERE uid="%s" order by "last_processed_time" desc limit 0,10'%(uid)
         result = db.run(sql)
-        message = general.doubleListJudge(result)
-        if message:
-            respon_json = tornado.escape.json_encode(message)
+        self.message = general.doubleListJudge(result)
+        if self.message:
+            print self.message
+            self.message.sort(lambda x,y:cmp(x[4],y[4]))
+            print self.message
+            respon_json = tornado.escape.json_encode(self.message)
             self.write_message(respon_json)
 
     def on_close(self):
         print "dealOrders websocket close"
         self.dealOrderData.stop()
+        self.message = None
 
 class avatarInfo(BaseWebSocketHandler):
     clients = set()

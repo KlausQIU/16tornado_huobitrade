@@ -25,27 +25,36 @@
         font-weight: bold;
         color:#FF4D90;
     }
+    .HuobiLtcTradeTab{
+        display:block;
+        font:宋体;
+        text-align:center;
+        font-size:20px;
+        font-weight: bold;
+        margin-top: 20px;
+        color:#05e4a1;
+    }
 input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
     -webkit-box-shadow: 0 0 0px 1000px white inset !important;
     background-image: none;
     color: rgb(0, 0, 0);
 }
 </style>
- <div class="col-md-4" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom: 10px">
+ <div class="col-md-4 stats-info stats-info1" style="margin-bottom: 10px;float:left;margin-left: 20px;margin-right: 20px;">
     <div class="col-md-12">
- <ul id="HuobiLtcSellTab" class="nav nav-tabs"> 
+ <ul id="HuobiLtcSellTab"  class="nav nav-tabs"> 
     <li class="active">
-        <a href = "#Sell" data-toggle="tab" style='display:block;font:宋体;text-align:center;font-size:20px;font-weight: bold;color:#05e4a1;' >
+        <a href = "#Sell" data-toggle="tab" class="HuobiLtcTradeTab" >
             限价卖出
         </a>
     </li>
     <li>
-        <a href="#marketSell" data-toggle="tab" style='display:block;font:宋体;text-align:center;font-size:20px;font-weight: bold;color:#05e4a1;' >
+        <a href="#marketSell" data-toggle="tab" class="HuobiLtcTradeTab " >
             市价卖出
         </a>
     </li>
 </ul>
-<div id="myTabContent" class="tab-content">
+<div id="HuobiLtcSell" class="tab-content">
     <div id="Sell" class="tab-pane fade in active">
         <div class="col-md-12"><span class='HuobiLtcSellTitle'>可用  <span class="availableLtc">{{ available_ltc_display }}</span> LTC</span></div>
         <div class="col-md-12 setting_margin">
@@ -68,14 +77,14 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
         <div class="col-md-12"><span class='HuobiLtcSellTitle'>可用  <span class="availableLtc">{{ available_ltc_display }}</span> LTC</span></div>
         <div class="col-md-12 setting_margin">
             <span class="input-group-addon setting_span">卖出量LTC</span>
-            <input type="text" name="SellCount" autocomplete="off" class="form-control1 setting_input SellSet" oninput="SellChange(event)" value="{{ available_ltc_display }}">
+            <input type="text" name="marketSellCount" autocomplete="off" class="form-control1 setting_input SellSet" oninput="SellChange(event)" value="{{ available_ltc_display }}">
         </div>
         <div class="col-md-12 setting_margin">
             <span class="input-group-addon setting_span">交易额</span>
             <span name="SellTradeMoney" style="margin-top: 5px;font-size: 18px;font-weight: bold;color:#f10d0d;text-align: center;display: block"></span>
         </div>
         <div class="col-md-12 setting_margin">
-        <button class="btn btn-info SellHuobiLtc" name="SellHuobiLtc" style="margin:0 auto;display:block;">卖出LTC</button>
+        <button class="btn btn-info SellMarketLtc" name="SellMarketLtc" style="margin:0 auto;display:block;">卖出LTC</button>
         </div>
         </div>
     </div>
@@ -85,9 +94,14 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
 
 // firefox chrome opera
 function  SellChange(event){
+    if(event.target.name == "SellCount"){
+        var SellPrice = $("input[name='SellPrice']").val();
+   $("span[name='SellTradeMoney']").text((parseFloat(SellPrice)*parseFloat(event.target.value)).toFixed(2)+'  CNY');
+   }else{
     var SellCount = $("input[name='SellCount']").val();
     var SellPrice = $("input[name='SellPrice']").val();
    $("span[name='SellTradeMoney']").text((parseFloat(SellPrice)*parseFloat(SellCount)).toFixed(2)+'  CNY');
+}
 }
 // Internet Explorer
 function OnPropChanged (event) {
@@ -97,6 +111,4 @@ function OnPropChanged (event) {
         $("span[name='SellTradeMoney']").text((parseFloat(SellPrice)*parseFloat(SellCount)).toFixed(2)+'  CNY');
     }
 }
-
-
 </script>

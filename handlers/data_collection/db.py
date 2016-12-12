@@ -207,10 +207,10 @@ if __name__ == '__main__':
     # selectRow = {'id':1}
     # db.update('user',updateRow,selectRow)
     #c = db.run('SELECT * FROM dealOrder WHERE uid="0" order by "last_processed_time" desc limit 0,20')
-    c = db.run('select * from dealOrder where uid="0" and time >= "20161209000000"')
-    print len(c)
+    c = db.run('select * from dealOrder where uid="0" and time >= "20161212000000" and time <= "20161213000000"')
     for i in c:
         print c.index(i),i
+    print len(c)
     # for d in c:
     #     if float(d[4]):
     #         print d

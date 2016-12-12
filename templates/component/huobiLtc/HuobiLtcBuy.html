@@ -25,6 +25,15 @@
         font-weight: bold;
         color:#FF4D90;
     }
+    .HuobiLtcTradeTab{
+        display:block;
+        font:宋体;
+        text-align:center;
+        font-size:20px;
+        font-weight: bold;
+        margin-top: 20px;
+        color:#05e4a1;
+    }
 input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
     -webkit-box-shadow: 0 0 0px 1000px white inset !important;
     background-image: none;
@@ -33,14 +42,22 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
 </style>
 <div class="col-md-4 stats-info stats-info1" style="margin-bottom: 10px;float:left;margin-left: 20px;margin-right: 20px;" >
         <div class="col-md-12" >
-        <span style='display:block;font:宋体;text-align:center;font-size:20px;font-weight: bold;margin-top: 20px;color:#05e4a1;' >限价买入<br><br></span>
-        </div>
+        <ul id="HuobiLtcBuyTab" class="nav nav-tabs">
+        <li class="active">
+        <a href="#Buy" data-toggle="tab" class="HuobiLtcTradeTab" >限价买入</a>
+        </li>
+        <li>
+            <a href="#marketBuy" data-toggle="tab" class="HuobiLtcTradeTab">市价买入</a>
+        </li>
+        </ul>
+        <div id="HuobiLtcBuy" class="tab-content">
+        <div id="Buy" class="tab-pane fade in active">
         <div class="col-md-12"><span class='HuobiLtcBuyTitle'>可用  <span class="availableCny">{{ available_cny_display }}</span> CNY</span></div>
         <div class="col-md-12 setting_margin">
             <span class="input-group-addon setting_span" >买入价CNY/LTC</span>
                 <input type="text" name="BuyPrice" autocomplete="off" class="form-control1 setting_input BuySet" oninput="BuyChange(event)" value="{{ tradePrice }}">
         </div>
-        <div class="col-md-12 setting_margin">
+        <div  class="col-md-12 setting_margin">
             <span class="input-group-addon setting_span">买入量LTC</span>
             <input type="text" name="BuyCount" autocomplete="off" class="form-control1 setting_input BuySet" oninput="BuyChange(event)" value="0">
         </div>
@@ -52,12 +69,33 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
         <button class="btn btn-info BuyHuobiLtc" name = "BuyHuobiLtc" style="margin:0 auto;display:block;">买入LTC</button>
         </div>
         </div>
+        <div id="marketBuy" class="tab-pane fade">
+        <div class="col-md-12"><span class='HuobiLtcBuyTitle'>可用  <span class="availableCny">{{ available_cny_display }}</span> CNY</span></div>
+        <div class="col-md-12 setting_margin">
+            <span class="input-group-addon setting_span">买入量LTC</span>
+            <input type="text" name="marketBuyCount" autocomplete="off" class="form-control1 setting_input SellSet" oninput="BuyChange(event)" value="1">
+        </div>
+        <div class="col-md-12 setting_margin">
+            <span class="input-group-addon setting_span">交易额</span>
+            <span name="BuyTradeMoney" style="margin-top: 5px;font-size: 18px;font-weight: bold;color:#f10d0d;text-align: center;display: block"></span>
+        </div>
+        <div class="col-md-12 setting_margin">
+        <button class="btn btn-info BuyMarketLtc" name="BuyMarketLtc" style="margin:0 auto;display:block;">买入LTC</button>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
 <script>
 
 function  BuyChange(event){
+    if(event.target.name == "BuyCount"){
+        var BuyPrice = $("input[name='BuyPrice']").val();
+        $("span[name='BuyTradeMoney']").text((parseFloat(BuyPrice)*parseFloat(event.target.value)).toFixed(2)+'  CNY');
+    }else{
     var BuyCount = $("input[name='BuyCount']").val();
     var BuyPrice = $("input[name='BuyPrice']").val();
    $("span[name='BuyTradeMoney']").text((parseFloat(BuyPrice)*parseFloat(BuyCount)).toFixed(2)+'  CNY');
 }
-
+}
 </script>

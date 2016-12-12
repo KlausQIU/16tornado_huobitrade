@@ -15,7 +15,7 @@
                         <th class="align_right">成交额(¥) </th>
                     </tr>
                 </thead>
-                <tbody id="order_list">
+                <tbody id="deal_order_list">
                 <!-- <tr>
                     <td class="entrust_time"></td>
                      <td class="align_left"><span class=""></span></td>
@@ -46,10 +46,48 @@
 <script>
 var dealOrdersUrl = 'ws://'+window.location.host+'/api/dealOrders';
 var dealOrdersWS = new WebSocket(dealOrdersUrl);
+Date.prototype.Format = function (fmt) { //author: meizz 
+    var o = {
+        "Y+":this.getFullYear(),
+        "M+": this.getMonth() + 1, //月份 
+        "d+": this.getDate(), //日 
+        "h+": this.getHours(), //小时 
+        "m+": this.getMinutes(), //分 
+        "s+": this.getSeconds(), //秒 
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+        "S": this.getMilliseconds() //毫秒 
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+}
+$(function(){
 dealOrdersWS.onmessage = function(event){
         var data = JSON.parse(event.data);
+        var newDate = new Date();
+        console.log(data)
         $.each(data,function(index,item){
-            
+            newDate.setTime(parseInt(item[4])*1000);
+            var total = (parseFloat(item[5])*parseFloat(item[6])).toFixed(2)
+            var trlist = $('#deal_order_list tr');
+            var type = parseInt(item[7]) == 2?'卖出':'买入'
+            insertHtml = '<tr><td>'+newDate.Format("YYYY/MM/dd hh:mm:ss")+'</td>'
+            insertHtml += '<td>'+type+'</td>'
+            insertHtml += '<td>'+item[6]+'</td>'
+            insertHtml += '<td>'+item[6]+'</td>'
+            insertHtml += '<td>'+item[5]+'</td>'           
+            insertHtml += '<td>'+total+'</td></tr>'
+            console.log(insertHtml)
+            if(trlist.length<=0){
+                $('#deal_order_list').html(insertHtml)
+                }else{
+                   $('#deal_order_list tr:first-child').before(insertHtml);     
+                }
+            if(trlist.length >= 12){
+                $('#deal_order_list tr:last-child').remove()
+            }
             })
     } 
+})
 </script>
