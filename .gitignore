@@ -47,3 +47,4 @@ Temporary Items
 .apdisk
 *.pyc
 handlers/data_collection/db.py
+*.bat
