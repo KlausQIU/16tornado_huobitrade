@@ -52,7 +52,6 @@ function PublicDealMessage(){
     $('.tradeVol').html(PublicData.ltcTradeVol)
     }
     }
-
 $(function(){
 PublicDealMessage()
 });

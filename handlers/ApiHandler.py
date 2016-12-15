@@ -185,7 +185,6 @@ class dealOrders(BaseWebSocketHandler):
         result = db.run(sql)
         self.message = general.doubleListJudge(result)
         if self.message:
-            print self.message
             self.message.sort(lambda x,y:cmp(x[4],y[4]))
             print self.message
             respon_json = tornado.escape.json_encode(self.message)
@@ -319,9 +318,9 @@ class tradePennyShow(BaseWebSocketHandler):
                         return
                     respon_json = tornado.escape.json_encode(data[0])
                     self.write_message(respon_json)
-                    self.judge = order_id                
+                    self.judge = order_id               
                 else:
-                    self.judge = order_id 
+                    self.judge = order_id
 
     def on_close(self):
         print "tradePennyShow websocket close"

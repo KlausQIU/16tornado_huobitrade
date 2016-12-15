@@ -49,7 +49,6 @@ class personalHandler():
             db = d.db_control()
             self.uid = db.select('user',access_key=self.a_key)[0][1]
             #收益
-            print 
             self.profit = self.Profit()
             #当前仓位
             self.freightSpace = self.freightSpace1()
@@ -211,9 +210,8 @@ class personalHandler():
                     #数据库表里的第一条数据的order_id跟新获取的数据做比对
                     if DBdealOrders[-1][2] == order['id']:
                         orderIndex = dealOrders.index(order)
-                        if orderIndex < 9:
+                        if 4 < orderIndex < 9:
                             for i in range(orderIndex+1,10):
-                                print dealOrders[i]
                                 resultOrder.append(dealOrders[i])
                             return resultOrder
                         else:

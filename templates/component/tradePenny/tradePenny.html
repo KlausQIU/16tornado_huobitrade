@@ -11,11 +11,18 @@ $(function(){
     var tradePennyShowWS = new WebSocket(tradePennyShowUrl);
     tradePennyShowWS.onmessage = function(event){
         var data = JSON.parse(event.data);
+        console.log(data)
         if(data){
+            var newMessage = '<li id="firstMessage">'+data[8].substring(10)+'</li>';
+            var first = $('#firstMessage').text()
+            console.log(first)
+            if (first == ""){
             $('.tradePennyShow').text('')
             console.log(data)
-            var newMessage = '<li>'+data[8].substring(10)+'</li>';
             $('.tradePennyShow').append(newMessage);
+            }else{
+                $('#firstMessage').before(newMessage)
+            }
         }
     }
     })
