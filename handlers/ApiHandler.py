@@ -192,8 +192,9 @@ class dealOrders(BaseWebSocketHandler):
 
     def on_close(self):
         print "dealOrders websocket close"
+        general.doubleListJudge(None)
         self.dealOrderData.stop()
-        self.message = None
+        
 
 class avatarInfo(BaseWebSocketHandler):
     clients = set()

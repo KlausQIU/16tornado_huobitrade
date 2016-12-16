@@ -48,11 +48,12 @@ def doubleListJudge(listData):
             diff = list(set(tupleData).difference(set(dlistJudgeData)))
             dlistJudgeData = tupleData if tupleData else listData
             return diff if diff else None
+    else:
+        dlistJudgeData = None
+        return None
 
 
 
 
 if __name__ == '__main__':
-    print dealdata(5)
-    print dealdata(6)
-    print dealdata(6)
+    print doubleListJudge(None)

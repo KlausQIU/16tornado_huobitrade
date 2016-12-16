@@ -20,8 +20,8 @@ def main():
 
     print 'enter PublicData collection'
     dbLink = db.db_control()
-    publicData = dbLink.select('publicData')
     try:
+        publicData = dbLink.select('publicData')
         ltc = requests.get(r'http://api.huobi.com/staticmarket/ticker_ltc_json.js',timeout=5)
         ticker_ltc = ltc.json()['ticker']['last']
         ltcTradeVol = ltc.json()['ticker']['vol']
@@ -60,7 +60,6 @@ def main():
 
 
 def ltcData():
-
     print u'enter ltcData Collection'
     dbLink = db.db_control()
     try:
