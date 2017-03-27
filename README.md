@@ -1,6 +1,8 @@
 # 16tornado_huobitrade
 在git上新建网站副本
 
+框架脑图:
+![image](https://github.com/KlausQIU/09tornado_huobitrade/blob/master/static/images/tornadoHuobi.png)
 huobi api python
 ====================
 
