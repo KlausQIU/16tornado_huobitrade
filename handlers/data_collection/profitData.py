@@ -32,7 +32,7 @@ def ProfitDataCollection():
                     profit = personalH.profit
                     if profit == 0:
                         return
-                    db.insert('profitData',count,time.strftime('%Y%m%d%H%M%S',time.localtime()),setting[0][0],setting[0][0],profit)
+                    db.insert('profitData',count,time.strftime('%Y%m%d%H%M%S'),setting[0][0],setting[0][0],profit)
                 else:
                     for n in timeRun:
                         if timeRun[timeRun.index(n)-1] < int(str_time) < n:

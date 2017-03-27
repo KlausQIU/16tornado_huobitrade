@@ -53,6 +53,7 @@ def main():
                             print msg
                             dbLink.insert('dealOrder',user[1],str_now,order['id'],order['order_time'],order['last_processed_time'],order['order_amount'],order['order_price'],order['type'],msg)
                             # 'tradePenny','uid integer','BuyOrSell BLOB','Coin Blob','Amount BLOB','Price BLOB','Status Blob','msg BLOB','order_id BLOB'
+                
                 except BaseException as e:
                     print u'huobi api fxcking shit again!:',e
         privateData = dbLink.select('privateData')

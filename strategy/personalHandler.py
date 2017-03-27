@@ -25,8 +25,9 @@ def openDB(func):
 class personalHandler():
     """docstring for personalHandler /for personal accountInfo handler,make some parameter"""
     def __init__(self,access_key,secret_key):
-        try:
+        # try:
             #个人信息
+            print access_key,secret_key
             self.account_info = HuobiService.getAccountInfo(ACCOUNT_INFO,access_key,secret_key)
             #委托单信息
             self.getOrder = HuobiService.getOrders(2,GET_ORDERS,access_key,secret_key)
@@ -52,14 +53,15 @@ class personalHandler():
             self.profit = self.Profit()
             #当前仓位
             self.freightSpace = self.freightSpace1()
-        except BaseException as e:
-            self.total = 0
-            self.profit = 0
-            self.getOrder = {}
-            self.net_asset = 0
-            self.loan_ltc_display = 0
-            self.available_ltc_display = 0
-            print e
+        # except BaseException as e:
+        #     self.total = 0
+        #     self.profit = 0
+        #     self.getOrder = {}
+        #     self.net_asset = 0
+        #     self.loan_ltc_display = 0
+        #     self.available_ltc_display = 0
+        #     self.uid = 0
+        #     print e
 
     @openDB
     def ProfitRate(self,db,uid):
